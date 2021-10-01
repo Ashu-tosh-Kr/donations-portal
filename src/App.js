@@ -1,15 +1,34 @@
 import { Route, Switch } from "react-router";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Donation from "./screens/Donation";
-import Payment from "./screens/Payment";
+
+// const theme = createTheme({
+//   typography: {
+//     fontFamily: [
+//       "Quicksand",
+//       "-apple-system",
+//       "BlinkMacSystemFont",
+//       '"Segoe UI"',
+//       "Roboto",
+//       '"Helvetica Neue"',
+//       "Arial",
+//       "sans-serif",
+//       '"Apple Color Emoji"',
+//       '"Segoe UI Emoji"',
+//       '"Segoe UI Symbol"',
+//     ].join(","),
+//   },
+// });
 
 function App() {
   return (
+    // <ThemeProvider theme={theme}>
     <div className="App">
       <Switch>
         <Route path="/" exact component={Donation} />
-        <Route path="/payment" exact component={Payment} />
       </Switch>
     </div>
+    // </ThemeProvider>
   );
 }
 

@@ -7,7 +7,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
 }
-
+* {
+  scrollbar-color: #8ecae6 transparent;
+  scrollbar-width: thin !important;
+}
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+::-webkit-scrollbar-track {
+  border-radius: 1rem;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #8ecae6;
+  border-radius: 1rem;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
