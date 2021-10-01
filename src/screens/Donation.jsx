@@ -4,14 +4,14 @@ import "./Donation.styles.scss";
 import "antd/dist/antd.css";
 
 //Components
-import Header from "../header/Header";
-import ServicesTable from "../table/ServicesTable";
+import Header from "../components/header/Header";
+import ServicesTable from "../components/table/ServicesTable";
 
 //Antd
 import { Input, Form, Button, Modal, Table } from "antd";
 
 //API
-import { GET_DONATION_TYPES, GET_USER_DETAILS } from "../services/dataApi";
+import { GET_DONATION_TYPES, GET_USER_DETAILS } from "../api/dataApi";
 
 //Constants
 import { COLUMNS } from "../utils/Constants";
