@@ -95,7 +95,7 @@ export const GET_USER_DETAILS = (values) => {
  * @returns userdetails based on email or phone number
  */
 
-export const useGetUserDetails = () => {
+export const useGetUserDetails = (values) => {
   const history = useHistory();
   const {
     data: userDetails,
@@ -103,8 +103,10 @@ export const useGetUserDetails = () => {
     isLoading,
   } = useQuery(
     "getUserDetails",
-    async (values) => {
-      const res = await getUserDetailsApi(values);
+    async () => {
+      const res = await getUserDetailsApi({
+        email: "tgyaminiganapathy@gmail.com",
+      });
       return res.data;
     },
     {

@@ -124,6 +124,15 @@ export default function PaymentModal({ openPayModal, setOpenPayModal }) {
                     <Grid item xs={12} lg={6}>
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
+                          <Typography>Contact Info</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <InputField name="phone" label="Phone Number" />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <InputField name="email" label="Email" />
+                        </Grid>
+                        <Grid item xs={12}>
                           <Typography>Billing Address </Typography>
                         </Grid>
                         <Grid item xs={12}>
@@ -138,16 +147,6 @@ export default function PaymentModal({ openPayModal, setOpenPayModal }) {
                         </Grid>
                         <Grid item xs={4}>
                           <InputField name="zip" label="ZIP Code" />
-                        </Grid>
-
-                        <Grid item xs={12}>
-                          <Typography>Contact Info</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <InputField name="phone" label="Phone Number" />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <InputField name="email" label="Email" />
                         </Grid>
                       </Grid>
                     </Grid>
