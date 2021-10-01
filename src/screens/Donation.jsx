@@ -11,29 +11,33 @@ import ServicesTable from "../components/table/ServicesTable";
 import { Input, Form, Button, Modal, Table } from "antd";
 
 //API
-import { GET_DONATION_TYPES, GET_USER_DETAILS } from "../api/dataApi";
+import { GET_USER_DETAILS, useGetAllDonationOptions } from "../api/api";
 
 //Constants
 import { COLUMNS } from "../utils/Constants";
 import PaymentModal from "../components/modals/PaymentModal";
 
+const initialUserValues = {
+  refDataName: "",
+  dob: "",
+  gender: "",
+  gotraName: "",
+  nakshatraName: "",
+  entrpAddressLine1: "",
+  entrpCityName: "",
+  entrpStateName: "",
+  entrpZIPCode: "",
+};
+
 function Donation() {
-  const [modal2Visible, setModal2Visible] = useState(false);
+  const [openCartModal, setOpenCartModal] = useState(false);
   const [openPayModal, setOpenPayModal] = useState(false);
 
   const [cartItems, setCartItems] = useState([]);
-
-  const [donationsData, setDonationsData] = useState([]);
   const [userDetails, setUserDetails] = useState({});
   const [fetchBtnDisabled, setFetchBtnDisabled] = useState(true);
 
-  /**
-   * Triggers from on load useEffect
-   */
-  const getDonationData = async () => {
-    const data = await GET_DONATION_TYPES();
-    setDonationsData(data);
-  };
+  const { donationOptions, isLoading, isError } = useGetAllDonationOptions();
 
   /**
    * Triggers on top form submit button click
@@ -43,13 +47,6 @@ function Donation() {
     const userDetails = await GET_USER_DETAILS(values);
     setUserDetails(userDetails);
   };
-
-  /**
-   * On Load making an api to fetch donations data
-   */
-  useEffect(() => {
-    getDonationData();
-  }, []);
 
   /**
    * Triggers on table check box change
@@ -83,7 +80,7 @@ function Donation() {
         setOpenPayModal={setOpenPayModal}
       />
       <div className="App">
-        <Header></Header>
+        <Header />
         <div className="h-center donations-title">Donations</div>
         <Form layout="vertical" onFinish={onTopFormFinish}>
           <div className="h-center-inputs">
@@ -187,31 +184,36 @@ function Donation() {
               </Form.Item>
             </div>
           </fieldset>
-          <ServicesTable
-            onCheckboxChange={(rows, keys) => onCheckboxChange(rows, keys)}
-            columns={COLUMNS}
-            tabsArr={donationsData}
-          ></ServicesTable>
-          <div className="h-center-inputs">
-            <Button
-              type="primary"
-              onClick={() => setModal2Visible(true)}
-              style={{ margin: 20 }}
-              className="btn-cls"
-              // icon={<ShoppingCartOutlined />}
-              size="large"
-            >
-              Cart
-            </Button>
-            <Button
-              type="primary"
-              className="btn-cls"
-              style={{ margin: 20 }}
-              size="large"
-            >
-              Checkout
-            </Button>
-          </div>
+          {false ? (
+            <>
+              <ServicesTable
+                onCheckboxChange={(rows, keys) => onCheckboxChange(rows, keys)}
+                columns={COLUMNS}
+                tabsArr={donationOptions}
+              ></ServicesTable>
+              <div className="h-center-inputs">
+                <Button
+                  type="primary"
+                  onClick={() => setOpenCartModal(true)}
+                  style={{ margin: 20 }}
+                  className="btn-cls"
+                  size="large"
+                >
+                  Cart
+                </Button>
+                <Button
+                  type="primary"
+                  className="btn-cls"
+                  style={{ margin: 20 }}
+                  size="large"
+                >
+                  Checkout
+                </Button>
+              </div>
+            </>
+          ) : isError ? (
+            "Oops! There was an error!"
+          ) : null}
         </Form>
         <Modal
           title="Cart Items"
@@ -220,12 +222,12 @@ function Donation() {
             <Button
               key="submit"
               type="primary"
-              onClick={() => setModal2Visible(false)}
+              onClick={() => setOpenCartModal(false)}
             >
               OK
             </Button>,
           ]}
-          visible={modal2Visible}
+          visible={openCartModal}
         >
           <Table dataSource={cartItems} columns={COLUMNS}></Table>
         </Modal>
