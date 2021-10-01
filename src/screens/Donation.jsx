@@ -8,7 +8,7 @@ import Header from "../components/header/Header";
 import ServicesTable from "../components/table/ServicesTable";
 
 //Antd
-import { Input, Form, Button, Modal, Table } from "antd";
+import { Input, Table } from "antd";
 
 //API
 import { GET_USER_DETAILS, useGetAllDonationOptions } from "../api/api";
@@ -16,6 +16,9 @@ import { GET_USER_DETAILS, useGetAllDonationOptions } from "../api/api";
 //Constants
 import { COLUMNS } from "../utils/Constants";
 import PaymentModal from "../components/modals/PaymentModal";
+import { Formik, Form } from "formik";
+import { Grid, Button, Typography } from "@mui/material";
+import InputField from "../components/formComponents/InputField";
 
 const initialUserValues = {
   refDataName: "",
@@ -79,158 +82,115 @@ function Donation() {
         openPayModal={openPayModal}
         setOpenPayModal={setOpenPayModal}
       />
-      <div className="App">
+      <div>
         <Header />
-        <div className="h-center donations-title">Donations</div>
-        <Form layout="vertical" onFinish={onTopFormFinish}>
-          <div className="h-center-inputs">
-            <Form.Item
-              name="prsnEmail"
-              style={{ marginRight: 20 }}
-              label="Enter EMAIL"
-            >
-              <Input type="email" onBlur={onEmailPhoneBlur} />
-            </Form.Item>
-            <Form.Item name="mobile" label="Enter PHONE">
-              <Input type="text" onBlur={onEmailPhoneBlur} />
-            </Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              disabled={fetchBtnDisabled}
-              style={{ margin: 20 }}
-              className="btn-cls"
-              size="large"
-            >
-              Get Details
-            </Button>
-          </div>
-        </Form>
-        <Form layout="vertical">
-          <fieldset>
-            <legend>Donor Profile</legend>
-            <div className="h-center-inputs">
-              <Form.Item style={{ marginRight: 20 }} label="Name">
-                <Input
-                  name="refDataName"
-                  value={userDetails.refDataName}
-                  onChange={handleInputChange}
-                />
-              </Form.Item>
-              <Form.Item style={{ marginRight: 20 }} label="Day">
-                <Input
-                  name="dob"
-                  value={userDetails.dob}
-                  onChange={handleInputChange}
-                  type="text"
-                />
-              </Form.Item>
-              <Form.Item style={{ marginRight: 20 }} label="Gender">
-                <Input
-                  name="gender"
-                  value={userDetails.gender}
-                  onChange={handleInputChange}
-                  type="text"
-                />
-              </Form.Item>
-              <Form.Item style={{ marginRight: 20 }} label="Gotra">
-                <Input
-                  name="gotraName"
-                  value={userDetails.gotraName}
-                  onChange={handleInputChange}
-                  type="text"
-                />
-              </Form.Item>
-              <Form.Item style={{ marginRight: 20 }} label="Nakshatra">
-                <Input
-                  name="nakshatraName"
-                  value={userDetails.nakshatraName}
-                  onChange={handleInputChange}
-                  type="text"
-                />
-              </Form.Item>
-            </div>
-            <div className="h-center-inputs">
-              <Form.Item style={{ marginRight: 20 }} label="Address">
-                <Input
-                  name="entrpAddressLine1"
-                  value={userDetails.entrpAddressLine1}
-                  onChange={handleInputChange}
-                />
-              </Form.Item>
-              <Form.Item style={{ marginRight: 20 }} label="City">
-                <Input
-                  name="entrpCityName"
-                  value={userDetails.entrpCityName}
-                  type="text"
-                  onChange={handleInputChange}
-                />
-              </Form.Item>
-              <Form.Item style={{ marginRight: 20 }} label="State">
-                <Input
-                  name="entrpStateName"
-                  value={userDetails.entrpStateName}
-                  type="text"
-                  onChange={handleInputChange}
-                />
-              </Form.Item>
-              <Form.Item label="Zip">
-                <Input
-                  name="entrpZIPCode"
-                  value={userDetails.entrpZIPCode}
-                  type="text"
-                  onChange={handleInputChange}
-                />
-              </Form.Item>
-            </div>
-          </fieldset>
-          {false ? (
-            <>
-              <ServicesTable
-                onCheckboxChange={(rows, keys) => onCheckboxChange(rows, keys)}
-                columns={COLUMNS}
-                tabsArr={donationOptions}
-              ></ServicesTable>
-              <div className="h-center-inputs">
-                <Button
-                  type="primary"
-                  onClick={() => setOpenCartModal(true)}
-                  style={{ margin: 20 }}
-                  className="btn-cls"
-                  size="large"
-                >
-                  Cart
-                </Button>
-                <Button
-                  type="primary"
-                  className="btn-cls"
-                  style={{ margin: 20 }}
-                  size="large"
-                >
-                  Checkout
-                </Button>
-              </div>
-            </>
-          ) : isError ? (
-            "Oops! There was an error!"
-          ) : null}
-        </Form>
-        <Modal
-          title="Cart Items"
-          centered
-          footer={[
-            <Button
-              key="submit"
-              type="primary"
-              onClick={() => setOpenCartModal(false)}
-            >
-              OK
-            </Button>,
-          ]}
-          visible={openCartModal}
-        >
-          <Table dataSource={cartItems} columns={COLUMNS}></Table>
-        </Modal>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Typography sx={{ textAlign: "center" }} variant="h4">
+              Donor Details
+            </Typography>
+            <Formik>
+              {(formik) => {
+                // console.log(formik.values.expires);
+                return (
+                  <Form>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <Typography>Get Donor </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <InputField name="street" label="Street" />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <InputField name="city" label="City" />
+                      </Grid>
+                      <Grid item xs={12} lg={6}>
+                        <Grid container spacing={2}>
+                          <Grid item xs={8}>
+                            <InputField name="state" label="State" />
+                          </Grid>
+                          <Grid item xs={4}>
+                            <InputField name="zip" label="ZIP Code" />
+                          </Grid>
+
+                          <Grid item xs={12}>
+                            <Typography>Contact Info</Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <InputField name="phone" label="Phone Number" />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <InputField name="email" label="Email" />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={12} lg={6}>
+                        <Grid spacing={2} container>
+                          <Grid item xs={12}>
+                            <Typography>Card Details</Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <InputField name="cardNumber" label="Card Number" />
+                          </Grid>
+
+                          <Grid item xs={6}>
+                            <InputField name="firstName" label="First Name" />
+                          </Grid>
+                          <Grid item xs={6}>
+                            <InputField name="lastName" label="Last Name" />
+                          </Grid>
+                        </Grid>
+                        <Button
+                          type="submit"
+                          size="large"
+                          sx={{ marginTop: "1rem" }}
+                          variant="contained"
+                          fullWidth
+                        >
+                          Proceed
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Form>
+                );
+              }}
+            </Formik>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            {false ? (
+              <>
+                <ServicesTable
+                  onCheckboxChange={(rows, keys) =>
+                    onCheckboxChange(rows, keys)
+                  }
+                  columns={COLUMNS}
+                  tabsArr={donationOptions}
+                ></ServicesTable>
+                <div className="h-center-inputs">
+                  <Button
+                    type="primary"
+                    onClick={() => setOpenCartModal(true)}
+                    style={{ margin: 20 }}
+                    className="btn-cls"
+                    size="large"
+                  >
+                    Cart
+                  </Button>
+                  <Button
+                    type="primary"
+                    className="btn-cls"
+                    style={{ margin: 20 }}
+                    size="large"
+                  >
+                    Checkout
+                  </Button>
+                </div>
+              </>
+            ) : isError ? (
+              "Oops! There was an error!"
+            ) : null}
+          </Grid>
+        </Grid>
         <Button onClick={() => setOpenPayModal(true)}>Open</Button>
       </div>
     </>
