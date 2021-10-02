@@ -1,4 +1,4 @@
-import { Button, Modal, Typography, Box, Alert, Grid } from "@mui/material";
+import { Button, Modal, Box, Alert, Grid } from "@mui/material";
 import { useState } from "react";
 import RegisterModal from "./RegisterModal";
 

@@ -4,7 +4,7 @@ import "./Donation.styles.scss";
 
 //Components
 import Header from "../components/header/Header";
-import ServicesTable from "../components/table/ServicesTable";
+// import ServicesTable from "../components/table/ServicesTable";
 
 //API
 import { useGetAllDonationOptions, useGetUserDetails } from "../api/api";
@@ -12,7 +12,7 @@ import "antd/dist/antd.css";
 // import { Input, Form, Button, Modal, Table } from "antd";
 
 //Constants
-import { COLUMNS } from "../utils/Constants";
+// import { COLUMNS } from "../utils/Constants";
 import PaymentModal from "../components/modals/PaymentModal";
 import { Formik, Form } from "formik";
 import { Grid, Button, Typography, Skeleton, Alert } from "@mui/material";
@@ -49,7 +49,6 @@ function Donation() {
   const [openNotRegisteredModal, setOpenNotRegisteredModal] = useState(false);
   const { donationOptions, isLoading, isError } = useGetAllDonationOptions();
   const [userDetails, setUserDetails] = useState(initialUserValues);
-  console.log(donationOptions);
   const { mutate } = useGetUserDetails(
     setUserDetails,
     setOpenNotRegisteredModal
@@ -99,17 +98,22 @@ function Donation() {
                       <Grid item xs={12}>
                         <Typography>Contact Information</Typography>
                       </Grid>
-                      <Grid item xs={6} sm={4.5}>
+                      <Grid item xs={12} sm={6} md={4}>
                         <InputField name="email" label="Email" />
                       </Grid>
-                      <Grid item xs={12} sm={0.5}>
-                        <Typography sx={{ paddingTop: "1rem" }}>OR</Typography>
+                      <Grid item xs={12} sm={1}>
+                        <Typography
+                          variant="h5"
+                          sx={{ paddingTop: "0.5rem", textAlign: "center" }}
+                        >
+                          OR
+                        </Typography>
                       </Grid>
-                      <Grid item xs={6} sm={4}>
+                      <Grid item xs={12} sm={5} md={4}>
                         <InputField name="phone" label="Phone" />
                       </Grid>
 
-                      <Grid item xs={12} sm={3}>
+                      <Grid item xs={12} md={3}>
                         <Button
                           sx={{ height: "3.5rem" }}
                           fullWidth
@@ -130,14 +134,14 @@ function Donation() {
                       <Grid item xs={12}>
                         <Typography>Member Profile</Typography>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={12} md={4}>
                         <InputField name="name" label="Name" disabled />
                       </Grid>
 
-                      <Grid item xs={4}>
+                      <Grid item xs={12} sm={6} md={4}>
                         <InputField name="gotra" label="Gotra" disabled />
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={12} sm={6} md={4}>
                         <InputField
                           name="nakshatra"
                           label="Nakshatra"
@@ -151,17 +155,17 @@ function Donation() {
                       <Grid item xs={12}>
                         {/* <Typography>Address</Typography> */}
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={12} sm={6} md={4}>
                         <InputField name="address" label="Address" disabled />
                       </Grid>
-                      <Grid item xs={3}>
+                      <Grid item xs={12} sm={6} md={3}>
+                        <InputField name="state" label="State" disabled />
+                      </Grid>
+                      <Grid item xs={6} md={3}>
                         <InputField name="city" label="City" disabled />
                       </Grid>
 
-                      <Grid item xs={3}>
-                        <InputField name="state" label="State" disabled />
-                      </Grid>
-                      <Grid item xs={2}>
+                      <Grid item xs={6} md={2}>
                         <InputField name="zip" label="ZIP Code" disabled />
                       </Grid>
                     </Grid>
@@ -172,69 +176,76 @@ function Donation() {
               }}
             </Formik>
           </Grid>
-        </Grid>
 
-        {isLoading ? (
-          <Skeleton
-            animation="wave"
-            variant="rectangular"
-            width="full"
-            sx={{ borderRadius: "5px" }}
-            height={200}
-          />
-        ) : isError ? (
-          "Oops! There was an error!"
-        ) : (
-          <Grid sx={{ margin: "0 auto" }} item xs={8}>
-            <Services options={donationOptions} />
-          </Grid>
-        )}
-        {/* <Grid sx={{ margin: "0 auto" }} item xs={8}>
-            {!isLoading ? (
-              <>
-                <ServicesTable
-                  onCheckboxChange={
-                    (rows, keys) => {}
-                    // onCheckboxChange(rows, keys)
-                  }
-                  columns={COLUMNS}
-                  tabsArr={donationOptions}
-                ></ServicesTable>
-                <div className="h-center-inputs">
-                  <Button
-                    type="primary"
-                    variant="contained"
-                    onClick={() => setOpenCartModal(true)}
-                    style={{ margin: 20 }}
-                    className="btn-cls"
-                    size="large"
-                  >
-                    Cart
-                  </Button>
-                  <Button
-                    type="primary"
-                    variant="contained"
-                    className="btn-cls"
-                    style={{ margin: 20 }}
-                    size="large"
-                    onClick={() => setOpenPayModal(true)}
-                  >
-                    Checkout
-                  </Button>
-                </div>
-              </>
-            ) : isError ? (
-              "Oops! There was an error!"
-            ) : (
-              <Skeleton
-                animation="wave"
-                variant="rectangular"
-                width="full"
-                sx={{ borderRadius: "5px" }}
-                height={200}
-              />
-            )}
-          </Grid> */}
+          {isLoading ? (
+            <Skeleton
+              animation="wave"
+              variant="rectangular"
+              width="full"
+              sx={{ borderRadius: "5px" }}
+              height={200}
+            />
+          ) : isError ? (
+            <Grid sx={{ margin: "0 auto" }} item xs={8}>
+              <Typography>"Oops! There was an error!"</Typography>
+            </Grid>
+          ) : (
+            <>
+              <Grid sx={{ margin: "0 auto" }} item xs={8}>
+                <Services options={donationOptions} />
+              </Grid>
+              <Grid sx={{ margin: "0 auto" }} item xs={5}>
+                <Button
+                  type="primary"
+                  variant="contained"
+                  fullWidth
+                  onClick={() => setOpenCartModal(true)}
+                  sx={{ margin: "1rem 0" }}
+                  size="large"
+                >
+                  Cart
+                </Button>
+              </Grid>
+            </>
+          )}
+          {/* <Grid sx={{ margin: "0 auto" }} item xs={8}>
+          {!isLoading ? (
+            <>
+              <ServicesTable
+                onCheckboxChange={
+                  (rows, keys) => {}
+                  // onCheckboxChange(rows, keys)
+                }
+                columns={COLUMNS}
+                tabsArr={donationOptions}
+              ></ServicesTable>
+              <div className="h-center-inputs">
+                
+                <Button
+                  type="primary"
+                  variant="contained"
+                  className="btn-cls"
+                  style={{ margin: 20 }}
+                  size="large"
+                  onClick={() => setOpenPayModal(true)}
+                >
+                  Checkout
+                </Button>
+              </div>
+            </>
+          ) : isError ? (
+            "Oops! There was an error!"
+          ) : (
+            <Skeleton
+              animation="wave"
+              variant="rectangular"
+              width="full"
+              sx={{ borderRadius: "5px" }}
+              height={200}
+            />
+          )}
+        </Grid> */}
+        </Grid>
       </>
     </>
   );

@@ -1,17 +1,10 @@
-import {
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Autocomplete,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { Field, useField } from "formik";
 import { useState } from "react";
 const Select = ({ name, options, label, ...rest }) => {
   const [tempInput, setTempInput] = useState("");
   const [field, meta] = useField(name);
+
   return (
     <Field name={name}>
       {({ form, field }) => {
@@ -22,6 +15,10 @@ const Select = ({ name, options, label, ...rest }) => {
             value={value}
             onChange={(event, newValue) => {
               setFieldValue(name, newValue ? newValue : "");
+              //once the user selects a new geographical state,
+              //we're changing the selectedState state wich is passed in get city use query and it triggers a city options refetch based on the new state
+              const x =
+                name === "state" ? rest.setSelectedState(newValue) : null;
             }}
             inputValue={tempInput}
             onInputChange={(event, newInputValue) => {

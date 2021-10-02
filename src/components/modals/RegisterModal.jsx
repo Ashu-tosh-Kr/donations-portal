@@ -1,10 +1,16 @@
 import { Button, Modal, Typography, Box, Grid } from "@mui/material";
-import { useGetRashiOptions } from "../../api/api";
+import {
+  useGetCityOptions,
+  useGetGotraOptions,
+  useGetNakshatraOptions,
+  useGetStateOptions,
+  useRegister,
+} from "../../api/api";
 import * as Yup from "yup";
-import { useState } from "react";
 import { Form, Formik } from "formik";
 import Select from "../formComponents/Select";
 import InputField from "../formComponents/InputField";
+import { useEffect, useState } from "react";
 const modalCardStyle = {
   minWidth: "20rem",
   width: "30%",
@@ -42,10 +48,14 @@ const validationSchema = Yup.object().shape({
 });
 
 const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
-  const [registrationDetails, setRegistrationDetails] = useState(initialValues);
-  const { rashiOptions } = useGetRashiOptions();
+  const { nakshatraOptions } = useGetNakshatraOptions();
+  const { gotraOptions } = useGetGotraOptions();
+  const { stateOptions } = useGetStateOptions();
+  const [selectedState, setSelectedState] = useState("VIRGINIA");
+  const { cityOptions } = useGetCityOptions(selectedState);
+  const { mutate } = useRegister(setOpenRegisterModal);
   const onSubmit = (values) => {
-    console.log(values);
+    mutate(values);
   };
 
   return (
@@ -66,7 +76,7 @@ const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
         </Typography>
         <Formik
           enableReinitialize
-          initialValues={registrationDetails}
+          initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
@@ -99,14 +109,14 @@ const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
                         <Select
                           label="Nakshatra"
                           name="nakshatra"
-                          options={["hi", "hello"]}
+                          options={nakshatraOptions}
                         />
                       </Grid>
                       <Grid item xs={5}>
                         <Select
                           label="Gotra"
                           name="gotra"
-                          options={rashiOptions}
+                          options={gotraOptions}
                         />
                       </Grid>
                     </Grid>
@@ -121,17 +131,18 @@ const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
                       </Grid>
                       <Grid item xs={12}>
                         <Select
-                          label="City"
-                          name="city"
-                          options={["hi", "hello"]}
+                          label="State"
+                          name="state"
+                          options={stateOptions}
+                          setSelectedState={setSelectedState}
                         />
                       </Grid>
 
                       <Grid item xs={8}>
                         <Select
-                          label="State"
-                          name="state"
-                          options={["hi", "hello"]}
+                          label="City"
+                          name="city"
+                          options={cityOptions ? cityOptions : [""]}
                         />
                       </Grid>
                       <Grid item xs={4}>

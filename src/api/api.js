@@ -2,14 +2,18 @@ import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import { useHistory } from "react-router";
 import { v4 as uudi } from "uuid";
+import { CustomToast } from "../utils/CustomToast";
 
 const getUserDetailsApi = (data) =>
   axios.post(
-    `${process.env.REACT_APP_BASE_URL}/user/services/fetchUserDetails`,
-    data,
-    { headers: { "Content-Type": "multipart/form-data" } }
+    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/getClientDetails`,
+    data
   );
-
+const registerApi = (data) =>
+  axios.post(
+    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/addClientDetails`,
+    data
+  );
 const getAllDonationOptionsApi = () =>
   axios.get(`${process.env.REACT_APP_BASE_URL}/user/services/getCommonData`, {
     headers: {
@@ -23,105 +27,54 @@ const getAllDonationOptionsApi = () =>
   });
 const getNakshatraOptionsApi = () =>
   axios.post(`${process.env.REACT_APP_BASE_URL}/user/services/getNakshatra`, {
-    productId: "895892fa-127e-4dbf-941e-3e4486a834af",
+    productId: localStorage.getItem("productId"),
   });
-/**
- * @returns Fetches the data from DB and Formatts donations data for tabs and tables
- */
-export const GET_DONATION_TYPES = () => {
-  return new Promise((resolve, reject) => {
-    const BASE_URL = process.env.REACT_APP_BASE_URL;
-    const url = `${BASE_URL}/user/services/getCommonData`;
-    axios
-      .get(url, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        params: {
-          actionId: "businesstypeprofile",
-          product: "895892fa-127e-4dbf-941e-3e4486a834af",
-          dataJson: { aspectType: "Donation Setup" },
-        },
-      })
-      .then((res) => {
-        const resData = res.data || {};
-        let data = resData.data || [];
-        let donationsData = [];
-        data.forEach((rec) => {
-          let index = donationsData.findIndex(
-            (item) => item.typeName === rec.typeName
-          );
-          if (index === -1) {
-            donationsData.push({
-              typeName: rec.typeName,
-              types: [
-                {
-                  name: rec.refDataName || "",
-                  amount: rec.amount || 0,
-                  key: uudi(),
-                },
-              ],
-            });
-          } else {
-            donationsData[index].types.push({
-              name: rec.refDataName || "",
-              amount: rec.amount || 0,
-              key: uudi(),
-            });
-          }
-        });
-        resolve(donationsData || []);
-      })
-      .catch((err) => {
-        reject(err);
-      });
+
+const getGotraOptionsApi = () =>
+  axios.post(`${process.env.REACT_APP_BASE_URL}/user/services/getGotra`, {
+    productId: localStorage.getItem("productId"),
   });
-};
-/**
- * Fetches user data based on email or phone
- */
-export const GET_USER_DETAILS = (values) => {
-  const data = { ...values };
-  return new Promise((resolve, reject) => {
-    const BASE_URL = process.env.REACT_APP_BASE_URL;
-    const url = `${BASE_URL}/user/services/fetchUserDetails`;
-    axios
-      .post(url, data)
-      .then((res) => {
-        resolve(res.data && res.data.length > 0 ? res.data[0] : {});
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-};
+
+const getStateOptionsApi = () =>
+  axios.post(
+    `${process.env.REACT_APP_BASE_URL}/business/services/getNewStateCodeTypes`,
+    {
+      productId: localStorage.getItem("productId"),
+    }
+  );
+const getCityOptionsApi = (stateName) =>
+  axios.post(
+    `${process.env.REACT_APP_BASE_URL}/business/services/getNewCityTypes`,
+    {
+      productId: localStorage.getItem("productId"),
+      stateName: stateName,
+    }
+  );
 
 /**
- * @returns userdetails based on email or phone number
+ * Hooks
  */
-
 export const useGetUserDetails = (
   setUserDetails,
   setOpenNotRegisteredModal
 ) => {
-  const history = useHistory();
   const { mutate } = useMutation(
     "getUserDetails",
     async (values) => {
-      const data = new FormData();
-      data.append("productId", "895892fa-127e-4dbf-941e-3e4486a834af");
-      data.append("email", values.email);
-      data.append("phone", values.phone);
-      data.append(
-        "token",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE2MzI0NjY5NjgsImV4cCI6MTYzNTA1ODk2OH0.KtyCxcHXONm2zuvcg4of9cYsl44r95HfHM7QRJm-ucM"
-      );
       const res = await getUserDetailsApi(values);
-      return res.data;
+      const data = {
+        ...res.data.data[0],
+        email: values.email ? values.email : "",
+        phone: values.phone ? values.phone : "",
+      };
+      return data;
     },
     {
       onSuccess: (data) => {
+        console.log(data);
         setUserDetails(data);
+        console.log(data);
+        localStorage.setItem("productId", data.productId);
       },
       onError: (error) => {
         setOpenNotRegisteredModal(true);
@@ -131,9 +84,6 @@ export const useGetUserDetails = (
   return { mutate };
 };
 
-/**
- * @returns all the dotions options
- */
 export const useGetAllDonationOptions = () => {
   const history = useHistory();
   const {
@@ -144,7 +94,6 @@ export const useGetAllDonationOptions = () => {
     "allDonation",
     async () => {
       const res = await getAllDonationOptionsApi();
-
       let donationsData = [];
       res.data.data.forEach((rec) => {
         let index = donationsData.findIndex(
@@ -189,13 +138,14 @@ export const useGetNakshatraOptions = () => {
     isLoading,
     isError,
   } = useQuery(
-    "rashiOptions",
+    "nakshatraOptions",
     async () => {
       const res = await getNakshatraOptionsApi();
       const data = res.data.data.map((itm) => {
         return itm.nakshatra;
       });
-      return data;
+      //adding an extra empty string so that deleting the selection by user doesn't throw an error
+      return [...data, ""];
     },
     {
       onError: (error) => {
@@ -206,4 +156,108 @@ export const useGetNakshatraOptions = () => {
     }
   );
   return { nakshatraOptions, isLoading, isError };
+};
+
+export const useGetGotraOptions = () => {
+  const history = useHistory();
+  const {
+    data: gotraOptions,
+    isLoading,
+    isError,
+  } = useQuery(
+    "gotraOptions",
+    async () => {
+      const res = await getGotraOptionsApi();
+      const data = res.data.data.map((itm) => {
+        return itm.gotra;
+      });
+      return [...data, ""];
+    },
+    {
+      onError: (error) => {
+        history.replace(history.location.pathname, {
+          errorStatusCode: error.response ? error.response.status : 500,
+        });
+      },
+    }
+  );
+  return { gotraOptions, isLoading, isError };
+};
+
+export const useGetStateOptions = () => {
+  const history = useHistory();
+  const {
+    data: stateOptions,
+    isLoading,
+    isError,
+  } = useQuery(
+    "stateOptions",
+    async () => {
+      const res = await getStateOptionsApi();
+      const data = res.data.data.map((itm) => {
+        return itm.stateName;
+      });
+      return [...data, ""];
+    },
+    {
+      onError: (error) => {
+        history.replace(history.location.pathname, {
+          errorStatusCode: error.response ? error.response.status : 500,
+        });
+      },
+    }
+  );
+  return { stateOptions, isLoading, isError };
+};
+
+export const useGetCityOptions = (state) => {
+  const history = useHistory();
+  const {
+    data: cityOptions,
+    isLoading,
+    isError,
+  } = useQuery(
+    ["cityOptions", state],
+    async () => {
+      const res = await getCityOptionsApi(state);
+      const data = res.data.data.map((itm) => {
+        return itm.cityName;
+      });
+      return [...data, ""];
+    },
+    {
+      onError: (error) => {
+        history.replace(history.location.pathname, {
+          errorStatusCode: error.response ? error.response.status : 500,
+        });
+      },
+    }
+  );
+  return { cityOptions, isLoading, isError };
+};
+
+export const useRegister = (setShowNewProject) => {
+  //to refetch details on register
+  const { mutate: getUserDetails } = useGetUserDetails();
+  const { mutate } = useMutation(
+    async (values) => {
+      await registerApi(values);
+      return values;
+    },
+    {
+      onMutate: () => {},
+      onSuccess: (data) => {
+        setShowNewProject(false);
+        //once the user is registered, we're refetching the details to prepopulate
+        getUserDetails(data);
+        CustomToast("You've been registered");
+      },
+      onError: (error) => {
+        console.log(error);
+
+        CustomToast(error.response.data.message);
+      },
+    }
+  );
+  return { mutate };
 };
