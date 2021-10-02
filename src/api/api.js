@@ -21,11 +21,9 @@ const getAllDonationOptionsApi = () =>
       dataJson: { aspectType: "Donation Setup" },
     },
   });
-const getRashiOptionsApi = () =>
-  axios.post(`${process.env.REACT_APP_BASE_URL}/user/services/getRashi`, {
+const getNakshatraOptionsApi = () =>
+  axios.post(`${process.env.REACT_APP_BASE_URL}/user/services/getNakshatra`, {
     productId: "895892fa-127e-4dbf-941e-3e4486a834af",
-    token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE2MzI0NjY5NjgsImV4cCI6MTYzNTA1ODk2OH0.KtyCxcHXONm2zuvcg4of9cYsl44r95HfHM7QRJm-ucM",
   });
 /**
  * @returns Fetches the data from DB and Formatts donations data for tabs and tables
@@ -184,18 +182,18 @@ export const useGetAllDonationOptions = () => {
   return { donationOptions, isLoading, isError };
 };
 
-export const useGetRashiOptions = () => {
+export const useGetNakshatraOptions = () => {
   const history = useHistory();
   const {
-    data: rashiOptions,
+    data: nakshatraOptions,
     isLoading,
     isError,
   } = useQuery(
     "rashiOptions",
     async () => {
-      const res = await getRashiOptionsApi();
+      const res = await getNakshatraOptionsApi();
       const data = res.data.data.map((itm) => {
-        return itm.rashi;
+        return itm.nakshatra;
       });
       return data;
     },
@@ -207,5 +205,5 @@ export const useGetRashiOptions = () => {
       },
     }
   );
-  return { rashiOptions, isLoading, isError };
+  return { nakshatraOptions, isLoading, isError };
 };
