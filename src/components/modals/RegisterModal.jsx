@@ -7,7 +7,7 @@ import Select from "../formComponents/Select";
 import InputField from "../formComponents/InputField";
 const modalCardStyle = {
   minWidth: "20rem",
-  width: "50%",
+  width: "30%",
   overflowY: "scroll",
   maxHeight: "95vh",
   bgcolor: "background.paper",
@@ -57,7 +57,11 @@ const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
       aria-describedby="Prompt user to register"
     >
       <Box sx={modalCardStyle}>
-        <Typography color="primary" variant="h3" sx={{ textAlign: "center" }}>
+        <Typography
+          color="primary"
+          variant="h4"
+          sx={{ textAlign: "center", margin: "1rem 0" }}
+        >
           Registration Form
         </Typography>
         <Formik
@@ -71,29 +75,22 @@ const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
             return (
               <Form>
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <Typography>Contact Information</Typography>
+                  </Grid> */}
+                  <Grid item xs={12}>
+                    <InputField name="name" label="Name" />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <InputField name="phone" label="Phone" />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                     <InputField name="email" label="Email" />
                   </Grid>
-
-                  {/* <Grid item xs={12}>
-                    <Alert severity="info">
-                      Please enter either your e-mail or phone number above so
-                      that we can fetch your details
-                    </Alert>
-                  </Grid> */}
-                  <Grid item xs={12} lg={6}>
+                  <Grid item xs={12}>
                     <Grid container spacing={2}>
-                      <Grid item xs={12}>
+                      {/* <Grid item xs={12}>
                         <Typography>Donor Profile</Typography>
-                      </Grid>
+                      </Grid> */}
                       <Grid item xs={9}>
-                        <InputField name="name" label="Name" />
+                        <InputField name="phone" label="Phone" />
                       </Grid>
                       <Grid item xs={3}>
                         <InputField name="age" label="Age" />
@@ -109,16 +106,16 @@ const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
                         <Select
                           label="Gotra"
                           name="gotra"
-                          options={["hi", "hello"]}
+                          options={rashiOptions}
                         />
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item xs={12} lg={6}>
+                  <Grid item xs={12}>
                     <Grid container spacing={2}>
-                      <Grid item xs={12}>
+                      {/* <Grid item xs={12}>
                         <Typography>Address</Typography>
-                      </Grid>
+                      </Grid> */}
                       <Grid item xs={12}>
                         <InputField name="address" label="Address" />
                       </Grid>
@@ -144,7 +141,13 @@ const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
                   </Grid>
                 </Grid>
 
-                <Button variant="contained" type="submit" color="primary">
+                <Button
+                  fullWidth
+                  sx={{ marginTop: "1rem" }}
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                >
                   Register
                 </Button>
               </Form>

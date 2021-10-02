@@ -22,7 +22,7 @@ const getAllDonationOptionsApi = () =>
     },
   });
 const getRashiOptionsApi = () =>
-  axios.get(`${process.env.REACT_APP_BASE_URL}/business/services/getRashi`, {
+  axios.post(`${process.env.REACT_APP_BASE_URL}/user/services/getRashi`, {
     productId: "895892fa-127e-4dbf-941e-3e4486a834af",
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE2MzI0NjY5NjgsImV4cCI6MTYzNTA1ODk2OH0.KtyCxcHXONm2zuvcg4of9cYsl44r95HfHM7QRJm-ucM",
@@ -194,8 +194,10 @@ export const useGetRashiOptions = () => {
     "rashiOptions",
     async () => {
       const res = await getRashiOptionsApi();
-
-      return res.data.data;
+      const data = res.data.data.map((itm) => {
+        return itm.rashi;
+      });
+      return data;
     },
     {
       onError: (error) => {

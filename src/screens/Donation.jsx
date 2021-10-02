@@ -20,6 +20,7 @@ import InputField from "../components/formComponents/InputField";
 import NotRegisteredModal from "../components/modals/NotRegisteredModal";
 import CartModal from "../components/modals/CartModal";
 import * as Yup from "yup";
+import Services from "../components/table/Services";
 
 const initialUserValues = {
   email: "",
@@ -48,7 +49,7 @@ function Donation() {
   const [openNotRegisteredModal, setOpenNotRegisteredModal] = useState(false);
   const { donationOptions, isLoading, isError } = useGetAllDonationOptions();
   const [userDetails, setUserDetails] = useState(initialUserValues);
-
+  console.log(donationOptions);
   const { mutate } = useGetUserDetails(
     setUserDetails,
     setOpenNotRegisteredModal
@@ -94,16 +95,20 @@ function Donation() {
                 // console.log(formik.values.expires);
                 return (
                   <Form>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={2} sx={{ marginBottom: "1rem" }}>
                       <Grid item xs={12}>
                         <Typography>Contact Information</Typography>
+                      </Grid>
+                      <Grid item xs={6} sm={4.5}>
+                        <InputField name="email" label="Email" />
+                      </Grid>
+                      <Grid item xs={12} sm={0.5}>
+                        <Typography sx={{ paddingTop: "1rem" }}>OR</Typography>
                       </Grid>
                       <Grid item xs={6} sm={4}>
                         <InputField name="phone" label="Phone" />
                       </Grid>
-                      <Grid item xs={6} sm={5}>
-                        <InputField name="email" label="Email" />
-                      </Grid>
+
                       <Grid item xs={12} sm={3}>
                         <Button
                           sx={{ height: "3.5rem" }}
@@ -120,60 +125,71 @@ function Donation() {
                           so that we can fetch your details
                         </Alert>
                       </Grid>
-                      <Grid item xs={12} lg={6}>
-                        <Grid container spacing={2}>
-                          <Grid item xs={12}>
-                            <Typography>Donor Profile</Typography>
-                          </Grid>
-                          <Grid item xs={9}>
-                            <InputField name="name" label="Name" disabled />
-                          </Grid>
-                          <Grid item xs={3}>
-                            <InputField name="age" label="Age" disabled />
-                          </Grid>
-                          <Grid item xs={7}>
-                            <InputField
-                              name="nakshatra"
-                              label="Nakshatra"
-                              disabled
-                            />
-                          </Grid>
-                          <Grid item xs={5}>
-                            <InputField name="gotra" label="Gotra" disabled />
-                          </Grid>
-                        </Grid>
+                      {/* <Grid item xs={12} lg={6}> */}
+                      {/* <Grid container spacing={2}> */}
+                      <Grid item xs={12}>
+                        <Typography>Member Profile</Typography>
                       </Grid>
-                      <Grid item xs={12} lg={6}>
-                        <Grid container spacing={2}>
-                          <Grid item xs={12}>
-                            <Typography>Address</Typography>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <InputField
-                              name="address"
-                              label="Address"
-                              disabled
-                            />
-                          </Grid>
-                          <Grid item xs={12}>
-                            <InputField name="city" label="City" disabled />
-                          </Grid>
+                      <Grid item xs={4}>
+                        <InputField name="name" label="Name" disabled />
+                      </Grid>
 
-                          <Grid item xs={8}>
-                            <InputField name="state" label="State" disabled />
-                          </Grid>
-                          <Grid item xs={4}>
-                            <InputField name="zip" label="ZIP Code" disabled />
-                          </Grid>
-                        </Grid>
+                      <Grid item xs={4}>
+                        <InputField name="gotra" label="Gotra" disabled />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <InputField
+                          name="nakshatra"
+                          label="Nakshatra"
+                          disabled
+                        />
+                      </Grid>
+                      {/* </Grid> */}
+                      {/* </Grid> */}
+                      {/* <Grid item xs={12} lg={6}> */}
+                      {/* <Grid container spacing={2}> */}
+                      <Grid item xs={12}>
+                        {/* <Typography>Address</Typography> */}
+                      </Grid>
+                      <Grid item xs={4}>
+                        <InputField name="address" label="Address" disabled />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <InputField name="city" label="City" disabled />
+                      </Grid>
+
+                      <Grid item xs={3}>
+                        <InputField name="state" label="State" disabled />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <InputField name="zip" label="ZIP Code" disabled />
                       </Grid>
                     </Grid>
+                    {/* </Grid> */}
+                    {/* </Grid> */}
                   </Form>
                 );
               }}
             </Formik>
           </Grid>
-          <Grid item xs={12}>
+        </Grid>
+
+        {isLoading ? (
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            width="full"
+            sx={{ borderRadius: "5px" }}
+            height={200}
+          />
+        ) : isError ? (
+          "Oops! There was an error!"
+        ) : (
+          <Grid sx={{ margin: "0 auto" }} item xs={8}>
+            <Services options={donationOptions} />
+          </Grid>
+        )}
+        {/* <Grid sx={{ margin: "0 auto" }} item xs={8}>
             {!isLoading ? (
               <>
                 <ServicesTable
@@ -215,11 +231,10 @@ function Donation() {
                 variant="rectangular"
                 width="full"
                 sx={{ borderRadius: "5px" }}
-                height={250}
+                height={200}
               />
             )}
-          </Grid>
-        </Grid>
+          </Grid> */}
       </>
     </>
   );
