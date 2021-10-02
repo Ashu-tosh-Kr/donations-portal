@@ -6,7 +6,8 @@ import { v4 as uudi } from "uuid";
 const getUserDetailsApi = (data) =>
   axios.post(
     `${process.env.REACT_APP_BASE_URL}/user/services/fetchUserDetails`,
-    data
+    data,
+    { headers: { "Content-Type": "multipart/form-data" } }
   );
 
 const getAllDonationOptionsApi = () =>
@@ -19,6 +20,12 @@ const getAllDonationOptionsApi = () =>
       product: "895892fa-127e-4dbf-941e-3e4486a834af",
       dataJson: { aspectType: "Donation Setup" },
     },
+  });
+const getRashiOptionsApi = () =>
+  axios.get(`${process.env.REACT_APP_BASE_URL}/business/services/getRashi`, {
+    productId: "895892fa-127e-4dbf-941e-3e4486a834af",
+    token:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE2MzI0NjY5NjgsImV4cCI6MTYzNTA1ODk2OH0.KtyCxcHXONm2zuvcg4of9cYsl44r95HfHM7QRJm-ucM",
   });
 /**
  * @returns Fetches the data from DB and Formatts donations data for tabs and tables
@@ -95,29 +102,35 @@ export const GET_USER_DETAILS = (values) => {
  * @returns userdetails based on email or phone number
  */
 
-export const useGetUserDetails = (values) => {
+export const useGetUserDetails = (
+  setUserDetails,
+  setOpenNotRegisteredModal
+) => {
   const history = useHistory();
-  const {
-    data: userDetails,
-    isError,
-    isLoading,
-  } = useQuery(
+  const { mutate } = useMutation(
     "getUserDetails",
-    async () => {
-      const res = await getUserDetailsApi({
-        email: "tgyaminiganapathy@gmail.com",
-      });
+    async (values) => {
+      const data = new FormData();
+      data.append("productId", "895892fa-127e-4dbf-941e-3e4486a834af");
+      data.append("email", values.email);
+      data.append("phone", values.phone);
+      data.append(
+        "token",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE2MzI0NjY5NjgsImV4cCI6MTYzNTA1ODk2OH0.KtyCxcHXONm2zuvcg4of9cYsl44r95HfHM7QRJm-ucM"
+      );
+      const res = await getUserDetailsApi(values);
       return res.data;
     },
     {
+      onSuccess: (data) => {
+        setUserDetails(data);
+      },
       onError: (error) => {
-        history.replace(history.location.pathname, {
-          errorStatusCode: error.response ? error.response.status : 500,
-        });
+        setOpenNotRegisteredModal(true);
       },
     }
   );
-  return { userDetails, isError, isLoading };
+  return { mutate };
 };
 
 /**
@@ -169,4 +182,28 @@ export const useGetAllDonationOptions = () => {
     }
   );
   return { donationOptions, isLoading, isError };
+};
+
+export const useGetRashiOptions = () => {
+  const history = useHistory();
+  const {
+    data: rashiOptions,
+    isLoading,
+    isError,
+  } = useQuery(
+    "rashiOptions",
+    async () => {
+      const res = await getRashiOptionsApi();
+
+      return res.data.data;
+    },
+    {
+      onError: (error) => {
+        history.replace(history.location.pathname, {
+          errorStatusCode: error.response ? error.response.status : 500,
+        });
+      },
+    }
+  );
+  return { rashiOptions, isLoading, isError };
 };

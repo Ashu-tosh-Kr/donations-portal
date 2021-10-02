@@ -1,4 +1,15 @@
-import { Modal, Typography } from "@mui/material";
+import { Modal, Typography, Box } from "@mui/material";
+
+const modalCardStyle = {
+  minWidth: "20rem",
+  width: "40%",
+  overflowY: "scroll",
+  maxHeight: "95vh",
+  bgcolor: "background.paper",
+  borderRadius: "8px",
+  boxShadow: 24,
+  p: 4,
+};
 
 const CartModal = ({ openCartModal, setOpenCartModal }) => {
   return (
@@ -10,7 +21,9 @@ const CartModal = ({ openCartModal, setOpenCartModal }) => {
       aria-labelledby="cart-modal"
       aria-describedby="Open Cart"
     >
-      <Typography>Hello from cart</Typography>
+      <Box sx={modalCardStyle}>
+        <Typography>Hello from cart</Typography>
+      </Box>
     </Modal>
   );
 };

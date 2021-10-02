@@ -21,33 +21,34 @@ const validationSchema = Yup.object({
   email: Yup.string().email("Invalid Email").required("Required"),
 });
 
+const modalCardStyle = {
+  minWidth: "20rem",
+  width: "40%",
+  overflowY: "scroll",
+  maxHeight: "95vh",
+  bgcolor: "background.paper",
+  borderRadius: "8px",
+  boxShadow: 24,
+  p: 4,
+};
+
+const initialValues = {
+  cardNumber: "",
+  expires: new Date(),
+  cvv: "",
+  firstName: "",
+  lastName: "",
+  street: "",
+  city: "",
+  state: "",
+  zip: "",
+  phone: "",
+  email: "",
+};
+
 export default function PaymentModal({ openPayModal, setOpenPayModal }) {
   const [sdkReady, setSdkReady] = useState(false);
 
-  const initialValues = {
-    cardNumber: "",
-    expires: new Date(),
-    cvv: "",
-    firstName: "",
-    lastName: "",
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-    phone: "",
-    email: "",
-  };
-
-  const style = {
-    minWidth: "20rem",
-    width: "60%",
-    overflowY: "scroll",
-    maxHeight: "95vh",
-    bgcolor: "background.paper",
-    borderRadius: "8px",
-    boxShadow: 24,
-    p: 4,
-  };
   useEffect(() => {
     const addPayPalScript = async () => {
       // const { data } = await axios.get("/api/config/paypal");
@@ -84,7 +85,6 @@ export default function PaymentModal({ openPayModal, setOpenPayModal }) {
     return <div>Error Occurred in processing payment.! Please try again.</div>;
   }
 
-  // Default Render
   return (
     <>
       <Modal
@@ -94,7 +94,7 @@ export default function PaymentModal({ openPayModal, setOpenPayModal }) {
         aria-labelledby="payments-modal"
         aria-describedby="Enter credit card details to checkout"
       >
-        <Box sx={style}>
+        <Box sx={modalCardStyle}>
           <Grid container spacing={2} sx={{ marginBottom: "1rem" }}>
             <Grid item xs={12}>
               <Typography
@@ -105,8 +105,12 @@ export default function PaymentModal({ openPayModal, setOpenPayModal }) {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography style={{ textAlign: "center" }} variant="h2">
-                {"$300"}
+              <Typography
+                color="primary"
+                style={{ textAlign: "center", margin: "1rem" }}
+                variant="h2"
+              >
+                {`$ 300.00`}
               </Typography>
             </Grid>
           </Grid>
@@ -121,72 +125,52 @@ export default function PaymentModal({ openPayModal, setOpenPayModal }) {
               return (
                 <Form>
                   <Grid container spacing={2}>
-                    <Grid item xs={12} lg={6}>
-                      <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                          <Typography>Contact Info</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <InputField name="phone" label="Phone Number" />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <InputField name="email" label="Email" />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Typography>Billing Address </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <InputField name="street" label="Street" />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <InputField name="city" label="City" />
-                        </Grid>
-
-                        <Grid item xs={8}>
-                          <InputField name="state" label="State" />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <InputField name="zip" label="ZIP Code" />
-                        </Grid>
-                      </Grid>
+                    <Grid item xs={12}>
+                      <Typography>Contact Info</Typography>
                     </Grid>
-                    <Grid item xs={12} lg={6}>
-                      <Grid spacing={2} container>
-                        <Grid item xs={12}>
-                          <Typography>Card Details</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <InputField name="cardNumber" label="Card Number" />
-                        </Grid>
-                        <Grid item xs={7}>
-                          <DatePicker
-                            name="expires"
-                            label="Expires"
-                            // inputFormat="mm/yyyy"
-                            views={["year", "month"]}
-                          />
-                        </Grid>
-                        <Grid item xs={5}>
-                          <InputField name="cvv" label="CVV" />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <InputField name="firstName" label="First Name" />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <InputField name="lastName" label="Last Name" />
-                        </Grid>
-                      </Grid>
-                      <Button
-                        type="submit"
-                        size="large"
-                        sx={{ marginTop: "1rem" }}
-                        variant="contained"
-                        fullWidth
-                      >
-                        Proceed
-                      </Button>
+                    <Grid item xs={6}>
+                      <InputField name="firstName" label="First Name" />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputField name="lastName" label="Last Name" />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputField name="email" label="Email" />
+                    </Grid>
+                    <Grid item xs={8}>
+                      <InputField name="phone" label="Phone Number" />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <InputField name="zip" label="Billing ZIP Code" />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Typography>Card Details</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputField name="cardNumber" label="Card Number" />
+                    </Grid>
+                    <Grid item xs={7}>
+                      <DatePicker
+                        name="expires"
+                        label="Expires"
+                        // inputFormat="mm/yyyy"
+                        views={["year", "month"]}
+                      />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <InputField name="cvv" label="CVV" />
                     </Grid>
                   </Grid>
+                  <Button
+                    type="submit"
+                    size="large"
+                    sx={{ marginTop: "1rem" }}
+                    variant="contained"
+                    fullWidth
+                  >
+                    Proceed
+                  </Button>
                 </Form>
               );
             }}
