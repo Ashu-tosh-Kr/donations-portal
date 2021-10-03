@@ -6,9 +6,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.03) !important;
 }
 * {
-  scrollbar-color: #8ecae6 transparent;
+  scrollbar-color: #b71c1c transparent;
   scrollbar-width: thin !important;
 }
 ::-webkit-scrollbar {
@@ -18,7 +19,7 @@ body {
   border-radius: 1rem;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #8ecae6;
+  background-color: #b71c1c;
   border-radius: 1rem;
 }
 code {

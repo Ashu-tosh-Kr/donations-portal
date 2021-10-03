@@ -5,7 +5,7 @@ import {
   useGetNakshatraOptions,
   useGetStateOptions,
   useRegister,
-} from "../../api/api";
+} from "../../api/hooks";
 import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import Select from "../formComponents/Select";

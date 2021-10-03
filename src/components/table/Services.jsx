@@ -3,11 +3,33 @@ import { AppBar, Box, Tabs, Tab } from "@mui/material";
 import { useState } from "react";
 // import { DataGrid } from "@mui/x-data-grid";
 import { Table } from "antd";
-import { COLUMNS } from "../../utils/Constants";
 // const columns = [
 //   { field: "name", headerName: "Service Name", width: 400 },
 //   { field: "amount", headerName: "Amount", width: 400 },
 // ];
+const COLUMNS = [
+  {
+    title: (
+      <h2>
+        <a>Service Name</a>
+      </h2>
+    ),
+    dataIndex: "name",
+    key: "donationType",
+    render: (text) => <h4>{text}</h4>,
+  },
+  {
+    title: (
+      <h2>
+        <a>Amount</a>
+      </h2>
+    ),
+    dataIndex: "amount",
+    key: "amount",
+    // align: "right",
+    render: (text) => <h4>{`$ ${text}.00`}</h4>,
+  },
+];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -31,37 +53,32 @@ const Services = ({ options }) => {
   // console.log(selectionModel);
   return (
     <Box sx={{ bgcolor: "background.paper" }}>
-      {/* <AppBar position="static"> */}
-      <Tabs
-        value={selectedTab}
-        onChange={(e, newVal) => setSelectedTab(newVal)}
-        indicatorColor="secondary"
-        textColor="inherit"
-        variant="fullWidth"
-        variant="scrollable"
-        scrollButtons="auto"
-        aria-label="donations table tabs"
-      >
-        {options.map((option, index) => (
-          <Tab key={index} label={option.typeName} />
-        ))}
-      </Tabs>
-      {/* </AppBar> */}
+      <AppBar position="static">
+        <Tabs
+          value={selectedTab}
+          onChange={(e, newVal) => setSelectedTab(newVal)}
+          indicatorColor="secondary"
+          textColor="inherit"
+          variant="scrollable"
+          scrollButtons
+          allowScrollButtonsMobile
+          aria-label="donations table tabs"
+        >
+          {options.map((option, index) => (
+            <Tab key={index} label={option.typeName} />
+          ))}
+        </Tabs>
+      </AppBar>
 
       {options.map((option, index) => {
-        const mutatedOptions = option.types.map((item) => ({
-          ...item,
-          id: item.key,
-          amountNum: item.amount,
-          amount: `$ ${item.amount}.00`,
-        }));
-
         return (
           <TabPanel key={index} value={selectedTab} index={index}>
             <Table
-              dataSource={mutatedOptions}
+              dataSource={option.types}
               columns={COLUMNS}
               pagination={false}
+              bordered
+              scroll={{ y: 240 }}
               rowSelection={{
                 type: "checkbox",
                 // ...rowSelection,
