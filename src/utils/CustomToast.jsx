@@ -5,7 +5,7 @@ import "material-react-toastify/dist/ReactToastify.css";
 const CustomToast = (msg) => {
   const notify = () =>
     toast.error(msg, {
-      position: "bottom-center",
+      position: "bottom-right",
       className: "custom-toast",
       bodyClassName: "custom-toast-body",
       autoClose: 3000,
@@ -22,7 +22,7 @@ const CustomToast = (msg) => {
 const CustomToastContainer = () => {
   return (
     <ToastContainer
-      position="bottom-center"
+      position="bottom-right"
       autoClose={3000}
       hideProgressBar
       newestOnTop={false}

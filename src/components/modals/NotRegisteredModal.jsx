@@ -1,10 +1,11 @@
-import { Button, Modal, Box, Alert, Grid } from "@mui/material";
+import { Button, Modal, Box, Alert, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import RegisterModal from "./RegisterModal";
-
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 const modalCardStyle = {
   minWidth: "20rem",
-  width: "40%",
+  width: "60%",
   overflowY: "scroll",
   maxHeight: "95vh",
   bgcolor: "background.paper",
@@ -32,15 +33,29 @@ const NotRegisteredModal = ({
         aria-describedby="Prompt user to register"
       >
         <Box sx={modalCardStyle}>
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
+            <CloseOutlinedIcon sx={{ marginLeft: "auto", marginTop: "1rem" }} />
             <Grid item xs={12}>
-              <Alert severity="error">
-                Oops! It seems like you are not registered. Would you like to
-                register? proceed
+              <Typography
+                sx={{ textAlign: "center" }}
+                variant="h3"
+                color="primary"
+              >
+                <ErrorOutlineIcon
+                  sx={{ transform: "scale(1.8)", margin: "0 1rem 0.4rem 0" }}
+                />
+                Alert
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Alert sx={{ fontSize: 20 }} severity="error">
+                Incorrect email/phone number. Please input correct email/phone
+                number. If you're not registered, would you like to register?
               </Alert>
             </Grid>
             <Grid item xs={2} sx={{ margin: "0 auto" }}>
               <Button
+                sx={{ fontSize: 20 }}
                 onClick={() => setOpenRegisterModal(true)}
                 variant="contained"
                 color="primary"
@@ -49,7 +64,12 @@ const NotRegisteredModal = ({
               </Button>
             </Grid>
             <Grid item xs={2} sx={{ margin: "0 auto" }}>
-              <Button variant="contained" color="secondary">
+              <Button
+                sx={{ fontSize: 20 }}
+                variant="contained"
+                color="secondary"
+                onClick={() => setOpenNotRegisteredModal(false)}
+              >
                 No
               </Button>
             </Grid>

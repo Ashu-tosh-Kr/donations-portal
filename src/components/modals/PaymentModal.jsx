@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import InputField from "../formComponents/InputField";
 import { Grid, Typography, Button, Modal, Box } from "@mui/material";
 import DatePicker from "../formComponents/DatePicker";
-
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 const validationSchema = Yup.object({
   cardNumber: Yup.string().required("Required"),
   expires: Yup.string().required("Required"),
@@ -96,6 +96,7 @@ export default function PaymentModal({ openPayModal, setOpenPayModal }) {
       >
         <Box sx={modalCardStyle}>
           <Grid container spacing={2} sx={{ marginBottom: "1rem" }}>
+            <CloseOutlinedIcon sx={{ marginLeft: "auto", marginTop: "1rem" }} />
             <Grid item xs={12}>
               <Typography
                 style={{ textAlign: "center", lineHeight: "0.25em" }}
@@ -163,13 +164,17 @@ export default function PaymentModal({ openPayModal, setOpenPayModal }) {
                     </Grid>
                   </Grid>
                   <Button
-                    type="submit"
-                    size="large"
-                    sx={{ marginTop: "1rem" }}
-                    variant="contained"
                     fullWidth
+                    sx={{
+                      marginTop: "1.5rem",
+                      padding: "0.5rem",
+                      fontSize: 23,
+                    }}
+                    variant="contained"
+                    type="submit"
+                    color="primary"
                   >
-                    Proceed
+                    Process Payment
                   </Button>
                 </Form>
               );

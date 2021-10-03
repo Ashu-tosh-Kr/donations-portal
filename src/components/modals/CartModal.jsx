@@ -2,8 +2,7 @@ import { Modal, Box, Typography, Button, Stack } from "@mui/material";
 import Table from "antd/es/table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PaymentModal from "./PaymentModal";
-
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 const modalCardStyle = {
   minWidth: "20rem",
   width: "40%",
@@ -26,21 +25,13 @@ const CartModal = ({
 }) => {
   const COLUMNS = [
     {
-      title: (
-        <h2>
-          <a>Service Name</a>
-        </h2>
-      ),
+      title: <Typography variant="h4">Service Name</Typography>,
       dataIndex: "name",
       key: "donationType",
       render: (text) => <h4>{text}</h4>,
     },
     {
-      title: (
-        <h2>
-          <a>Amount</a>
-        </h2>
-      ),
+      title: <Typography variant="h4">Amount</Typography>,
       dataIndex: "amount",
       key: "amount",
       align: "right",
@@ -67,14 +58,16 @@ const CartModal = ({
         aria-describedby="Open Cart"
       >
         <Box sx={modalCardStyle}>
-          <Stack spacing={2}>
-            <Typography
-              sx={{ textAlign: "center" }}
-              variant="h3"
+          <Stack spacing={4}>
+            <CloseOutlinedIcon sx={{ marginLeft: "auto", marginTop: "1rem" }} />
+            <Button
+              sx={{ textAlign: "center", fontSize: 30, margin: "0 13rem" }}
+              variant="contained"
               color="primary"
+              startIcon={<ShoppingCartIcon />}
             >
-              <ShoppingCartIcon sx={{ fontSize: "5rem" }} />
-            </Typography>
+              {cartItems.length}
+            </Button>
             <Table
               dataSource={cartItems}
               columns={COLUMNS}
@@ -95,7 +88,11 @@ const CartModal = ({
                         </Typography>
                       </Table.Summary.Cell>
                       <Table.Summary.Cell>
-                        <Typography variant="h5">{`$ ${totalAmount}.00`}</Typography>
+                        <Typography
+                          color="primary"
+                          sx={{ textAlign: "right" }}
+                          variant="h5"
+                        >{`$ ${totalAmount}.00`}</Typography>
                       </Table.Summary.Cell>
                     </Table.Summary.Row>
                   </>
@@ -109,6 +106,7 @@ const CartModal = ({
                 //remove once apis are working
                 setOpenPayModal(true);
               }}
+              sx={{ fontSize: 20 }}
               variant="contained"
               color="primary"
             >

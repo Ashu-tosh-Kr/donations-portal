@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Donation.styles.scss";
-import { makeStyles } from "@mui/styles";
+
 import Header from "../components/header/Header";
 
 import {
@@ -18,6 +18,7 @@ import {
   Skeleton,
   Alert,
   Divider,
+  Badge,
 } from "@mui/material";
 import InputField from "../components/formComponents/InputField";
 import NotRegisteredModal from "../components/modals/NotRegisteredModal";
@@ -26,17 +27,6 @@ import * as Yup from "yup";
 import Services from "../components/table/Services";
 import { red } from "@mui/material/colors";
 import { CustomToast } from "../utils/CustomToast";
-
-const useStyles = makeStyles({
-  root: {
-    "&:before": {
-      borderTop: `2px solid ${red[900]} !important`,
-    },
-    "&:after": {
-      borderTop: `2px solid ${red[900]} !important`,
-    },
-  },
-});
 
 const initialUserValues = {
   email: "",
@@ -59,7 +49,6 @@ const validationSchema = Yup.object().shape({
 });
 
 function Donation() {
-  const classes = useStyles();
   const [openCartModal, setOpenCartModal] = useState(false);
   const [openPayModal, setOpenPayModal] = useState(false);
   const [openNotRegisteredModal, setOpenNotRegisteredModal] = useState(false);
@@ -121,7 +110,20 @@ function Donation() {
               sx={{ textAlign: "center", margin: "0.5rem" }}
               variant="h4"
             >
-              <Divider classes={classes}>DONATIONS</Divider>
+              <Divider
+                sx={{
+                  "&.MuiDivider-root": {
+                    "&:before": {
+                      borderTop: `2px solid ${red[900]}`,
+                    },
+                    "&:after": {
+                      borderTop: `2px solid ${red[900]} `,
+                    },
+                  },
+                }}
+              >
+                DONATIONS
+              </Divider>
             </Typography>
             <Formik
               enableReinitialize
@@ -154,7 +156,7 @@ function Donation() {
 
                       <Grid item xs={12} md={3}>
                         <Button
-                          sx={{ height: "3.5rem" }}
+                          sx={{ height: "3.3rem", fontSize: 20 }}
                           fullWidth
                           variant="contained"
                           type="submit"
@@ -231,17 +233,19 @@ function Donation() {
               <Grid sx={{ margin: "0 auto" }} item xs={11}>
                 <Services options={donationOptions} addToCart={addToCart} />
               </Grid>
-              <Grid sx={{ margin: "0 auto" }} item xs={2}>
-                <Button
-                  type="primary"
-                  variant="contained"
-                  fullWidth
-                  onClick={() => setOpenCartModal(true)}
-                  sx={{ margin: "1rem 0" }}
-                  size="large"
-                >
-                  Cart
-                </Button>
+              <Grid sx={{ margin: "1rem auto" }} item xs={2}>
+                <Badge badgeContent={cartItems.length} color="secondary">
+                  <Button
+                    type="primary"
+                    variant="contained"
+                    fullWidth
+                    onClick={() => setOpenCartModal(true)}
+                    sx={{ width: 200, fontSize: 20 }}
+                    size="large"
+                  >
+                    Cart
+                  </Button>
+                </Badge>
               </Grid>
             </>
           )}

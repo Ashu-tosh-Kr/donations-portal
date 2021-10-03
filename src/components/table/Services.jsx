@@ -1,8 +1,7 @@
-import { AppBar, Box, Tabs, Tab, Button } from "@mui/material";
+import { AppBar, Box, Tabs, Tab, Button, Typography } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useState } from "react";
 import Table from "antd/es/table";
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -24,30 +23,66 @@ const Services = ({ options, addToCart }) => {
   const COLUMNS = [
     {
       title: (
-        <h2>
-          <a>Service Name</a>
-        </h2>
+        <Typography
+          sx={{
+            color: "black",
+            backgroundColor: "#FFE699",
+            margin: "-2rem -1rem",
+            padding: "1rem",
+            color: "#2E5292",
+            fontWeight: "bold",
+          }}
+          variant="h6"
+        >
+          Service Name
+        </Typography>
       ),
       dataIndex: "name",
       key: "donationType",
-      render: (text) => <h4>{text}</h4>,
+      render: (text) => <h3>{text}</h3>,
     },
     {
       title: (
-        <h2>
-          <a>Amount</a>
-        </h2>
+        <Typography
+          sx={{
+            color: "black",
+            backgroundColor: "#FFE699",
+            margin: "-2rem -1rem",
+            padding: "1rem",
+            color: "#2E5292",
+            fontWeight: "bold",
+          }}
+          variant="h6"
+        >
+          Amount
+        </Typography>
       ),
       dataIndex: "amount",
       key: "amount",
-      align: "right",
+      align: "center",
+      // width: 300,
       render: (text) => <h4>{`$ ${text}.00`}</h4>,
     },
     {
-      title: "",
+      title: (
+        <Typography
+          sx={{
+            color: "black",
+            backgroundColor: "#FFE699",
+            margin: "-2rem -1rem",
+            padding: "1rem",
+            color: "#2E5292",
+            fontWeight: "bold",
+          }}
+          variant="h6"
+        >
+          Action
+        </Typography>
+      ),
       dataIndex: "",
       key: "",
       align: "center",
+      // width: 300,
       render: (item) => (
         <Button
           onClick={() => addToCart(item)}
@@ -71,9 +106,26 @@ const Services = ({ options, addToCart }) => {
           scrollButtons
           allowScrollButtonsMobile
           aria-label="donations table tabs"
+          sx={{
+            "& .MuiTabs-indicator": {
+              height: 0,
+            },
+          }}
         >
           {options.map((option, index) => (
-            <Tab key={index} label={option.typeName} />
+            <Tab
+              sx={{
+                fontSize: 17,
+                opacity: 1,
+                "&.Mui-selected": {
+                  backgroundColor: "secondary.main",
+                  borderRadius: 2,
+                  color: "black",
+                },
+              }}
+              key={index}
+              label={option.typeName}
+            />
           ))}
         </Tabs>
       </AppBar>

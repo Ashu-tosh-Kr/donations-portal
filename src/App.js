@@ -3,7 +3,7 @@ import Donation from "./screens/Donation";
 import PageNotFound from "./screens/PageNotFound";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CustomToastContainer } from "./utils/CustomToast";
-import { green, red } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 
 const theme = createTheme({
   palette: {
