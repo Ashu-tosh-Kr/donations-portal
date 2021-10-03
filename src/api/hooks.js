@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import { v4 as uudi } from "uuid";
 import { CustomToast } from "../utils/CustomToast";
 import {
+  addToCartApi,
   getAllDonationOptionsApi,
   getCityOptionsApi,
   getGotraOptionsApi,
@@ -16,7 +17,7 @@ export const useGetUserDetails = (
   setUserDetails,
   setOpenNotRegisteredModal
 ) => {
-  const { mutate } = useMutation(
+  const { mutate: mutateFetchUser } = useMutation(
     "getUserDetails",
     async (values) => {
       const res = await getUserDetailsApi(values);
@@ -39,7 +40,7 @@ export const useGetUserDetails = (
       },
     }
   );
-  return { mutate };
+  return { mutateFetchUser };
 };
 
 export const useGetAllDonationOptions = () => {
@@ -194,10 +195,8 @@ export const useGetCityOptions = (state) => {
   return { cityOptions, isLoading, isError };
 };
 
-export const useRegister = (setShowNewProject) => {
-  //to refetch details on register
-  const { mutate: getUserDetails } = useGetUserDetails();
-  const { mutate } = useMutation(
+export const useRegister = (setOpenRegisterModal) => {
+  const { mutate: mutateRegister } = useMutation(
     async (values) => {
       await registerApi(values);
       return values;
@@ -205,9 +204,29 @@ export const useRegister = (setShowNewProject) => {
     {
       onMutate: () => {},
       onSuccess: (data) => {
-        setShowNewProject(false);
-        //once the user is registered, we're refetching the details to prepopulate
-        getUserDetails(data);
+        setOpenRegisterModal(false);
+        CustomToast("You've been registered");
+      },
+      onError: (error) => {
+        console.log(error);
+        CustomToast(error.response.data.message);
+      },
+    }
+  );
+  return { mutateRegister };
+};
+
+export const useAddToCart = (setOpenPayModal) => {
+  const { mutate: mutateCart } = useMutation(
+    async (values) => {
+      await addToCartApi(values);
+      return values;
+    },
+    {
+      onMutate: () => {},
+      onSuccess: (data) => {
+        setOpenPayModal(true);
+
         CustomToast("You've been registered");
       },
       onError: (error) => {
@@ -217,5 +236,5 @@ export const useRegister = (setShowNewProject) => {
       },
     }
   );
-  return { mutate };
+  return { mutateCart };
 };

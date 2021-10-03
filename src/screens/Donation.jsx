@@ -2,11 +2,13 @@ import { useState } from "react";
 import "./Donation.styles.scss";
 import { makeStyles } from "@mui/styles";
 import Header from "../components/header/Header";
-// import ServicesTable from "../components/table/ServicesTable";
-import { useGetAllDonationOptions, useGetUserDetails } from "../api/hooks";
+
+import {
+  useAddToCart,
+  useGetAllDonationOptions,
+  useGetUserDetails,
+} from "../api/hooks";
 import "antd/dist/antd.css";
-// import { Input, Form, Button, Modal, Table } from "antd";
-// import { COLUMNS } from "../utils/Constants";
 import PaymentModal from "../components/modals/PaymentModal";
 import { Formik, Form } from "formik";
 import {
@@ -23,6 +25,7 @@ import CartModal from "../components/modals/CartModal";
 import * as Yup from "yup";
 import Services from "../components/table/Services";
 import { red } from "@mui/material/colors";
+import { CustomToast } from "../utils/CustomToast";
 
 const useStyles = makeStyles({
   root: {
@@ -60,19 +63,38 @@ function Donation() {
   const [openCartModal, setOpenCartModal] = useState(false);
   const [openPayModal, setOpenPayModal] = useState(false);
   const [openNotRegisteredModal, setOpenNotRegisteredModal] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
   const { donationOptions, isLoading, isError } = useGetAllDonationOptions();
   const [userDetails, setUserDetails] = useState(initialUserValues);
-  const { mutate } = useGetUserDetails(
+  const { mutateFetchUser } = useGetUserDetails(
     setUserDetails,
     setOpenNotRegisteredModal
   );
   const onSubmit = (values) => {
-    mutate({
+    mutateFetchUser({
       phone: values.phone,
       email: values.email,
     });
   };
-
+  const addToCart = (item) => {
+    const existItem = cartItems.find((itm) => itm.key === item.key);
+    if (!existItem) {
+      setCartItems([...cartItems, item]);
+      CustomToast("Added To Cart");
+    } else {
+      CustomToast("Already in Cart");
+    }
+  };
+  const removeFromCart = (item) => {
+    setCartItems((cartItems) =>
+      cartItems.filter((itm) => itm.key !== item.key)
+    );
+    CustomToast("Removed From Cart");
+  };
+  const { mutateCart } = useAddToCart(setOpenPayModal);
+  const handleCartSubmit = () => {
+    mutateCart(cartItems);
+  };
   return (
     <>
       <PaymentModal
@@ -86,6 +108,10 @@ function Donation() {
       <CartModal
         openCartModal={openCartModal}
         setOpenCartModal={setOpenCartModal}
+        cartItems={cartItems}
+        removeFromCart={removeFromCart}
+        setOpenPayModal={setOpenPayModal}
+        handleCartSubmit={handleCartSubmit}
       />
       <>
         <Header />
@@ -203,7 +229,7 @@ function Donation() {
           ) : (
             <>
               <Grid sx={{ margin: "0 auto" }} item xs={11}>
-                <Services options={donationOptions} />
+                <Services options={donationOptions} addToCart={addToCart} />
               </Grid>
               <Grid sx={{ margin: "0 auto" }} item xs={2}>
                 <Button
@@ -219,43 +245,6 @@ function Donation() {
               </Grid>
             </>
           )}
-          {/* <Grid sx={{ margin: "0 auto" }} item xs={8}>
-          {!isLoading ? (
-            <>
-              <ServicesTable
-                onCheckboxChange={
-                  (rows, keys) => {}
-                  // onCheckboxChange(rows, keys)
-                }
-                columns={COLUMNS}
-                tabsArr={donationOptions}
-              ></ServicesTable>
-              <div className="h-center-inputs">
-                
-                <Button
-                  type="primary"
-                  variant="contained"
-                  className="btn-cls"
-                  style={{ margin: 20 }}
-                  size="large"
-                  onClick={() => setOpenPayModal(true)}
-                >
-                  Checkout
-                </Button>
-              </div>
-            </>
-          ) : isError ? (
-            "Oops! There was an error!"
-          ) : (
-            <Skeleton
-              animation="wave"
-              variant="rectangular"
-              width="full"
-              sx={{ borderRadius: "5px" }}
-              height={200}
-            />
-          )}
-        </Grid> */}
         </Grid>
       </>
     </>

@@ -4,7 +4,7 @@ import "material-react-toastify/dist/ReactToastify.css";
 
 const CustomToast = (msg) => {
   const notify = () =>
-    toast.info(msg, {
+    toast.error(msg, {
       position: "bottom-center",
       className: "custom-toast",
       bodyClassName: "custom-toast-body",

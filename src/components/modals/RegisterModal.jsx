@@ -53,9 +53,9 @@ const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
   const { stateOptions } = useGetStateOptions();
   const [selectedState, setSelectedState] = useState("VIRGINIA");
   const { cityOptions } = useGetCityOptions(selectedState);
-  const { mutate } = useRegister(setOpenRegisterModal);
+  const { mutateRegister } = useRegister(setOpenRegisterModal);
   const onSubmit = (values) => {
-    mutate(values);
+    mutateRegister(values);
   };
 
   return (

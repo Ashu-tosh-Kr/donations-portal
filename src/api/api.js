@@ -46,3 +46,9 @@ export const getCityOptionsApi = (stateName) =>
       stateName: stateName,
     }
   );
+
+export const addToCartApi = (data) =>
+  axios.post(
+    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/addCartData`,
+    data
+  );
