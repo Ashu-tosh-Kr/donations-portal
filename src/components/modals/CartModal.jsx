@@ -5,7 +5,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 const modalCardStyle = {
   minWidth: "20rem",
-  width: "40%",
+  width: { xs: "90%", sm: "70%", md: "60%", lg: "40%" },
   overflowY: "scroll",
   maxHeight: "95vh",
   bgcolor: "background.paper",
@@ -25,13 +25,21 @@ const CartModal = ({
 }) => {
   const COLUMNS = [
     {
-      title: <Typography variant="h4">Service Name</Typography>,
+      title: (
+        <Typography sx={{ fontSize: [19, 22, 24] }} variant="h4">
+          Service Name
+        </Typography>
+      ),
       dataIndex: "name",
       key: "donationType",
       render: (text) => <h4>{text}</h4>,
     },
     {
-      title: <Typography variant="h4">Amount</Typography>,
+      title: (
+        <Typography sx={{ fontSize: [19, 22, 24] }} variant="h4">
+          Amount
+        </Typography>
+      ),
       dataIndex: "amount",
       key: "amount",
       align: "right",
@@ -59,7 +67,10 @@ const CartModal = ({
       >
         <Box sx={modalCardStyle}>
           <Stack spacing={4}>
-            <CloseOutlinedIcon sx={{ marginLeft: "auto", marginTop: "1rem" }} />
+            <CloseOutlinedIcon
+              onClick={() => setOpenCartModal(false)}
+              sx={{ marginLeft: "auto", marginTop: "1rem" }}
+            />
             <Button
               sx={{ textAlign: "center", fontSize: 30, margin: "0 13rem" }}
               variant="contained"
@@ -106,7 +117,7 @@ const CartModal = ({
                 //remove once apis are working
                 setOpenPayModal(true);
               }}
-              sx={{ fontSize: 20 }}
+              sx={{ fontSize: [16, 18, 20] }}
               variant="contained"
               color="primary"
             >

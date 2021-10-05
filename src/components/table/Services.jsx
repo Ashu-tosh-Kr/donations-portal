@@ -25,12 +25,12 @@ const Services = ({ options, addToCart }) => {
       title: (
         <Typography
           sx={{
-            color: "black",
             backgroundColor: "#FFE699",
             margin: "-2rem -1rem",
             padding: "1rem",
             color: "#2E5292",
             fontWeight: "bold",
+            fontSize: [16, 18, 20],
           }}
           variant="h6"
         >
@@ -39,18 +39,20 @@ const Services = ({ options, addToCart }) => {
       ),
       dataIndex: "name",
       key: "donationType",
-      render: (text) => <h3>{text}</h3>,
+      render: (text) => (
+        <Typography sx={{ fontSize: { xs: 14, md: 20 } }}>{text}</Typography>
+      ),
     },
     {
       title: (
         <Typography
           sx={{
-            color: "black",
             backgroundColor: "#FFE699",
             margin: "-2rem -1rem",
             padding: "1rem",
             color: "#2E5292",
             fontWeight: "bold",
+            fontSize: [16, 18, 20],
           }}
           variant="h6"
         >
@@ -61,18 +63,22 @@ const Services = ({ options, addToCart }) => {
       key: "amount",
       align: "center",
       // width: 300,
-      render: (text) => <h4>{`$ ${text}.00`}</h4>,
+      render: (text) => (
+        <Typography
+          sx={{ fontSize: { xs: 14, md: 20 } }}
+        >{`$ ${text}.00`}</Typography>
+      ),
     },
     {
       title: (
         <Typography
           sx={{
-            color: "black",
             backgroundColor: "#FFE699",
             margin: "-2rem -1rem",
             padding: "1rem",
             color: "#2E5292",
             fontWeight: "bold",
+            fontSize: [16, 18, 20],
           }}
           variant="h6"
         >
@@ -88,6 +94,7 @@ const Services = ({ options, addToCart }) => {
           onClick={() => addToCart(item)}
           variant="contained"
           startIcon={<AddShoppingCartIcon />}
+          sx={{ fontSize: { xs: 0, md: "inherit" } }}
         >
           Add to cart
         </Button>
@@ -115,7 +122,7 @@ const Services = ({ options, addToCart }) => {
           {options.map((option, index) => (
             <Tab
               sx={{
-                fontSize: 17,
+                fontSize: [13, 14, 17],
                 opacity: 1,
                 "&.Mui-selected": {
                   backgroundColor: "secondary.main",

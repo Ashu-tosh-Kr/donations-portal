@@ -13,8 +13,7 @@ import InputField from "../formComponents/InputField";
 import { useState } from "react";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 const modalCardStyle = {
-  minWidth: "20rem",
-  width: "30%",
+  width: ["90%", "60%", "40%", "30%"],
   overflowY: "scroll",
   maxHeight: "95vh",
   bgcolor: "background.paper",
@@ -69,7 +68,10 @@ const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
     >
       <Box sx={modalCardStyle}>
         <Grid container spacing={0}>
-          <CloseOutlinedIcon sx={{ marginLeft: "auto" }} />
+          <CloseOutlinedIcon
+            onClick={() => setOpenRegisterModal(false)}
+            sx={{ marginLeft: "auto" }}
+          />
           <Grid item xs={12}>
             <Typography
               color="primary"

@@ -145,7 +145,11 @@ function Donation() {
                       <Grid item xs={12} sm={1}>
                         <Typography
                           variant="h5"
-                          sx={{ paddingTop: "0.5rem", textAlign: "center" }}
+                          sx={{
+                            paddingTop: "0.5rem",
+                            textAlign: "center",
+                            fontSize: [16, 17, 20],
+                          }}
                         >
                           OR
                         </Typography>
@@ -156,7 +160,7 @@ function Donation() {
 
                       <Grid item xs={12} md={3}>
                         <Button
-                          sx={{ height: "3.3rem", fontSize: 20 }}
+                          sx={{ height: "3.3rem", fontSize: [16, 17, 20] }}
                           fullWidth
                           variant="contained"
                           type="submit"
@@ -233,14 +237,21 @@ function Donation() {
               <Grid sx={{ margin: "0 auto" }} item xs={11}>
                 <Services options={donationOptions} addToCart={addToCart} />
               </Grid>
-              <Grid sx={{ margin: "1rem auto" }} item xs={2}>
+              <Grid
+                sx={{
+                  margin: "1rem auto",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+                item
+                xs={12}
+              >
                 <Badge badgeContent={cartItems.length} color="secondary">
                   <Button
                     type="primary"
                     variant="contained"
-                    fullWidth
                     onClick={() => setOpenCartModal(true)}
-                    sx={{ width: 200, fontSize: 20 }}
+                    sx={{ width: [150, 150, 200], fontSize: [16, null, 20] }}
                     size="large"
                   >
                     Cart

@@ -33,6 +33,7 @@ export const useGetUserDetails = (
         console.log(data);
         setUserDetails(data);
         console.log(data);
+        localStorage.setItem("userId", data._id);
         localStorage.setItem("productId", data.productId);
       },
       onError: (error) => {
@@ -218,15 +219,18 @@ export const useRegister = (setOpenRegisterModal) => {
 
 export const useAddToCart = (setOpenPayModal) => {
   const { mutate: mutateCart } = useMutation(
-    async (values) => {
-      await addToCartApi(values);
-      return values;
+    async (cartItems) => {
+      const data = {
+        userId: localStorage.getItem("userId"),
+        productId: localStorage.getItem("productId"),
+        data: cartItems,
+        totalAmount: cartItems.reduce((sum, item) => sum + item.amount),
+      };
+      return await addToCartApi(data);
     },
     {
-      onMutate: () => {},
       onSuccess: (data) => {
         setOpenPayModal(true);
-
         CustomToast("You've been registered");
       },
       onError: (error) => {

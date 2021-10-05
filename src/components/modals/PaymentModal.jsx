@@ -96,7 +96,10 @@ export default function PaymentModal({ openPayModal, setOpenPayModal }) {
       >
         <Box sx={modalCardStyle}>
           <Grid container spacing={2} sx={{ marginBottom: "1rem" }}>
-            <CloseOutlinedIcon sx={{ marginLeft: "auto", marginTop: "1rem" }} />
+            <CloseOutlinedIcon
+              onClick={() => setOpenPayModal(false)}
+              sx={{ marginLeft: "auto", marginTop: "1rem" }}
+            />
             <Grid item xs={12}>
               <Typography
                 style={{ textAlign: "center", lineHeight: "0.25em" }}

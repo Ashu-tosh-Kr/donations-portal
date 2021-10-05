@@ -34,28 +34,47 @@ const NotRegisteredModal = ({
       >
         <Box sx={modalCardStyle}>
           <Grid container spacing={3}>
-            <CloseOutlinedIcon sx={{ marginLeft: "auto", marginTop: "1rem" }} />
+            <CloseOutlinedIcon
+              onClick={() => setOpenNotRegisteredModal(false)}
+              sx={{ marginLeft: "auto", marginTop: "1rem" }}
+            />
             <Grid item xs={12}>
               <Typography
-                sx={{ textAlign: "center" }}
+                sx={{ textAlign: "center", fontSize: [30, null, 40] }}
                 variant="h3"
                 color="primary"
               >
                 <ErrorOutlineIcon
-                  sx={{ transform: "scale(1.8)", margin: "0 1rem 0.4rem 0" }}
+                  sx={{
+                    transform: { md: "scale(1.8)" },
+                    margin: { md: "0 1rem 0.4rem 0" },
+                  }}
                 />
                 Alert
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Alert sx={{ fontSize: 20 }} severity="error">
+              <Alert
+                sx={{
+                  fontSize: [15, null, 20],
+                  textAlign: "justify",
+                  "& .MuiSvgIcon-root": {
+                    display: "none",
+                  },
+                }}
+                severity="error"
+              >
                 Incorrect email/phone number. Please input correct email/phone
                 number. If you're not registered, would you like to register?
               </Alert>
             </Grid>
-            <Grid item xs={2} sx={{ margin: "0 auto" }}>
+            <Grid
+              item
+              xs={6}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
               <Button
-                sx={{ fontSize: 20 }}
+                sx={{ fontSize: { md: 20 } }}
                 onClick={() => setOpenRegisterModal(true)}
                 variant="contained"
                 color="primary"
@@ -63,9 +82,13 @@ const NotRegisteredModal = ({
                 Yes
               </Button>
             </Grid>
-            <Grid item xs={2} sx={{ margin: "0 auto" }}>
+            <Grid
+              item
+              xs={6}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
               <Button
-                sx={{ fontSize: 20 }}
+                sx={{ fontSize: { md: 20 } }}
                 variant="contained"
                 color="secondary"
                 onClick={() => setOpenNotRegisteredModal(false)}
