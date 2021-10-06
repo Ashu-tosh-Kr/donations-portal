@@ -19,8 +19,6 @@ const CartModal = ({
   setOpenCartModal,
   cartItems,
   removeFromCart,
-  //remove once apis are working
-  setOpenPayModal,
   handleCartSubmit,
 }) => {
   const COLUMNS = [
@@ -114,8 +112,6 @@ const CartModal = ({
             <Button
               onClick={() => {
                 handleCartSubmit();
-                //remove once apis are working
-                setOpenPayModal(true);
               }}
               sx={{ fontSize: [16, 18, 20] }}
               variant="contained"

@@ -1,7 +1,6 @@
 // import axios from "axios";
 import { Formik, Form } from "formik";
 import React, { useEffect, useState } from "react";
-import "./PaymentModal.styles.scss";
 import * as Yup from "yup";
 import InputField from "../formComponents/InputField";
 import { Grid, Typography, Button, Modal, Box } from "@mui/material";

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./Donation.styles.scss";
 
 import Header from "../components/header/Header";
 
@@ -80,7 +79,7 @@ function Donation() {
     );
     CustomToast("Removed From Cart");
   };
-  const { mutateCart } = useAddToCart(setOpenPayModal);
+  const { mutateCart } = useAddToCart();
   const handleCartSubmit = () => {
     mutateCart(cartItems);
   };

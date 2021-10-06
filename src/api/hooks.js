@@ -217,7 +217,7 @@ export const useRegister = (setOpenRegisterModal) => {
   return { mutateRegister };
 };
 
-export const useAddToCart = (setOpenPayModal) => {
+export const useAddToCart = () => {
   const { mutate: mutateCart } = useMutation(
     async (cartItems) => {
       const data = {
@@ -226,12 +226,13 @@ export const useAddToCart = (setOpenPayModal) => {
         data: cartItems,
         totalAmount: cartItems.reduce((sum, item) => sum + item.amount),
       };
-      return await addToCartApi(data);
+      const res = await addToCartApi(data);
+      return res.data;
     },
     {
       onSuccess: (data) => {
-        setOpenPayModal(true);
-        CustomToast("You've been registered");
+        console.log(data);
+        CustomToast("Your cart items have been saved!");
       },
       onError: (error) => {
         console.log(error);
