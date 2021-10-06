@@ -1,5 +1,11 @@
 import axios from "axios";
 
+export const getTempleDetailsApi = (data) =>
+  axios.post(
+    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/getTempleDetails`,
+    data
+  );
+
 export const getUserDetailsApi = (data) =>
   axios.post(
     `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/getClientDetails`,

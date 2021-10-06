@@ -22,7 +22,7 @@ function App() {
       <div className="App">
         <CustomToastContainer />
         <Switch>
-          <Route path="/" exact component={Donation} />
+          <Route path="/donations/:productId" exact component={Donation} />
           <Route component={PageNotFound} />
         </Switch>
       </div>

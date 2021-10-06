@@ -9,9 +9,36 @@ import {
   getGotraOptionsApi,
   getNakshatraOptionsApi,
   getStateOptionsApi,
+  getTempleDetailsApi,
   getUserDetailsApi,
   registerApi,
 } from "./api";
+
+export const useGetTempleDetails = (productId) => {
+  const history = useHistory();
+  const {
+    data: templeDetails,
+    isLoading,
+    isError,
+  } = useQuery(
+    "templeDetails",
+    async () => {
+      const res = await getTempleDetailsApi();
+      return res.data;
+    },
+    {
+      onSuccess: () => {
+        localStorage.setItem("productId", productId);
+      },
+      onError: (error) => {
+        history.replace(history.location.pathname, {
+          errorStatusCode: error.response ? error.response.status : 500,
+        });
+      },
+    }
+  );
+  return { templeDetails, isLoading, isError };
+};
 
 export const useRegister = (
   setOpenRegisterModal,
@@ -28,7 +55,6 @@ export const useRegister = (
       return res.data;
     },
     {
-      onMutate: () => {},
       onSuccess: (data) => {
         setUserDetails(data);
         localStorage.setItem("email", data.email ? data.email : "");

@@ -26,6 +26,7 @@ import * as Yup from "yup";
 import Services from "../components/table/Services";
 import { red } from "@mui/material/colors";
 import { CustomToast } from "../utils/CustomToast";
+import { useParams } from "react-router";
 
 const initialUserValues = {
   email: "",
@@ -56,6 +57,8 @@ function Donation() {
   const { donationOptions, isLoading, isError } = useGetAllDonationOptions();
   //prop drilled to useRegister hook via NotRegisteredModal and RegisterModal modals
   const [userDetails, setUserDetails] = useState(initialUserValues);
+  const { productId } = useParams();
+
   const { mutateFetchUser } = useGetUserDetails(
     setUserDetails,
     setOpenNotRegisteredModal
@@ -105,7 +108,7 @@ function Donation() {
         handleCartSubmit={handleCartSubmit}
       />
       <>
-        <Header />
+        <Header productId={productId} />
         <Grid container spacing={2}>
           <Grid sx={{ margin: "0 auto" }} item xs={11}>
             <Typography
