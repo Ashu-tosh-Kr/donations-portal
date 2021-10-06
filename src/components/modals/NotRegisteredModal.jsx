@@ -17,11 +17,14 @@ const modalCardStyle = {
 const NotRegisteredModal = ({
   openNotRegisteredModal,
   setOpenNotRegisteredModal,
+  setUserDetails,
 }) => {
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
   return (
     <>
       <RegisterModal
+        setUserDetails={setUserDetails}
+        setOpenNotRegisteredModal={setOpenNotRegisteredModal}
         openRegisterModal={openRegisterModal}
         setOpenRegisterModal={setOpenRegisterModal}
       />

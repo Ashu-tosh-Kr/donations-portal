@@ -13,6 +13,39 @@ import {
   registerApi,
 } from "./api";
 
+export const useRegister = (
+  setOpenRegisterModal,
+  setOpenNotRegisteredModal,
+  setUserDetails
+) => {
+  const { mutate: mutateRegister } = useMutation(
+    async (values) => {
+      const payload = {
+        ...values,
+        productId: localStorage.getItem("productId"),
+      };
+      const res = await registerApi(payload);
+      return res.data;
+    },
+    {
+      onMutate: () => {},
+      onSuccess: (data) => {
+        setUserDetails(data);
+        localStorage.setItem("email", data.email ? data.email : "");
+        localStorage.setItem("phone", data.phone ? data.phone : "");
+        setOpenRegisterModal(false);
+        setOpenNotRegisteredModal(false);
+        CustomToast("You've been registered");
+      },
+      onError: (error) => {
+        console.log(error);
+        CustomToast(error.response.data.message);
+      },
+    }
+  );
+  return { mutateRegister };
+};
+
 export const useGetUserDetails = (
   setUserDetails,
   setOpenNotRegisteredModal
@@ -20,21 +53,22 @@ export const useGetUserDetails = (
   const { mutate: mutateFetchUser } = useMutation(
     "getUserDetails",
     async (values) => {
-      const res = await getUserDetailsApi(values);
+      const payload = {
+        ...values,
+        productId: localStorage.getItem("productId"),
+      };
+      const res = await getUserDetailsApi(payload);
       const data = {
         ...res.data.data[0],
-        email: values.email ? values.email : "",
-        phone: values.phone ? values.phone : "",
       };
       return data;
     },
     {
       onSuccess: (data) => {
-        console.log(data);
         setUserDetails(data);
         console.log(data);
-        localStorage.setItem("userId", data._id);
-        localStorage.setItem("productId", data.productId);
+        localStorage.setItem("email", data.email ? data.email : "");
+        localStorage.setItem("phone", data.phone ? data.phone : "");
       },
       onError: (error) => {
         setOpenNotRegisteredModal(true);
@@ -196,32 +230,12 @@ export const useGetCityOptions = (state) => {
   return { cityOptions, isLoading, isError };
 };
 
-export const useRegister = (setOpenRegisterModal) => {
-  const { mutate: mutateRegister } = useMutation(
-    async (values) => {
-      await registerApi(values);
-      return values;
-    },
-    {
-      onMutate: () => {},
-      onSuccess: (data) => {
-        setOpenRegisterModal(false);
-        CustomToast("You've been registered");
-      },
-      onError: (error) => {
-        console.log(error);
-        CustomToast(error.response.data.message);
-      },
-    }
-  );
-  return { mutateRegister };
-};
-
 export const useAddToCart = () => {
   const { mutate: mutateCart } = useMutation(
     async (cartItems) => {
       const data = {
-        userId: localStorage.getItem("userId"),
+        email: localStorage.getItem("email"),
+        phone: localStorage.getItem("phone"),
         productId: localStorage.getItem("productId"),
         data: cartItems,
         totalAmount: cartItems.reduce((sum, item) => sum + item.amount),

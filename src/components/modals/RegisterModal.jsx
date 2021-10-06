@@ -47,13 +47,22 @@ const validationSchema = Yup.object().shape({
   zip: Yup.string().required("Required"),
 });
 
-const RegisterModal = ({ openRegisterModal, setOpenRegisterModal }) => {
+const RegisterModal = ({
+  openRegisterModal,
+  setOpenRegisterModal,
+  setUserDetails,
+  setOpenNotRegisteredModal,
+}) => {
   const { nakshatraOptions } = useGetNakshatraOptions();
   const { gotraOptions } = useGetGotraOptions();
   const { stateOptions } = useGetStateOptions();
   const [selectedState, setSelectedState] = useState("VIRGINIA");
   const { cityOptions } = useGetCityOptions(selectedState);
-  const { mutateRegister } = useRegister(setOpenRegisterModal);
+  const { mutateRegister } = useRegister(
+    setOpenRegisterModal,
+    setOpenNotRegisteredModal,
+    setUserDetails
+  );
   const onSubmit = (values) => {
     mutateRegister(values);
   };

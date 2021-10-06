@@ -50,9 +50,11 @@ const validationSchema = Yup.object().shape({
 function Donation() {
   const [openCartModal, setOpenCartModal] = useState(false);
   const [openPayModal, setOpenPayModal] = useState(false);
+  //prop drilled to useRegister hook via Nonreg and reg modals
   const [openNotRegisteredModal, setOpenNotRegisteredModal] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const { donationOptions, isLoading, isError } = useGetAllDonationOptions();
+  //prop drilled to useRegister hook via NotRegisteredModal and RegisterModal modals
   const [userDetails, setUserDetails] = useState(initialUserValues);
   const { mutateFetchUser } = useGetUserDetails(
     setUserDetails,
@@ -90,6 +92,7 @@ function Donation() {
         setOpenPayModal={setOpenPayModal}
       />
       <NotRegisteredModal
+        setUserDetails={setUserDetails}
         openNotRegisteredModal={openNotRegisteredModal}
         setOpenNotRegisteredModal={setOpenNotRegisteredModal}
       />
@@ -216,7 +219,7 @@ function Donation() {
               }}
             </Formik>
           </Grid>
-          <Grid sx={{ margin: "1rem" }} xs={12}>
+          <Grid item sx={{ margin: "1rem" }} xs={12}>
             <Divider variant="middle" />
           </Grid>
           {isLoading ? (
