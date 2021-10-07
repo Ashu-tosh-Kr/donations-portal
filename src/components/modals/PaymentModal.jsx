@@ -48,24 +48,24 @@ const initialValues = {
 export default function PaymentModal({ openPayModal, setOpenPayModal }) {
   const [sdkReady, setSdkReady] = useState(false);
 
-  useEffect(() => {
-    const addPayPalScript = async () => {
-      // const { data } = await axios.get("/api/config/paypal");
-      const data = {
-        clientToken: "",
-      };
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `https://www.paypal.com/sdk/js?client-id=AZyy6akAuprcwc7ii-Rd3q7kIl-7HIjIwNJAkMur2jbEb3tAPnAfTTdN7Ciz5xwfGIu4ZxCtBPbeWpFe`;
-      script.setAttribute("data-client-token", `${data.clientToken}`);
-      script.async = true;
-      script.onload = () => {
-        setSdkReady(true);
-      };
-      document.body.appendChild(script);
-    };
-    addPayPalScript();
-  }, []);
+  // useEffect(() => {
+  //   const addPayPalScript = async () => {
+  //     // const { data } = await axios.get("/api/config/paypal");
+  //     const data = {
+  //       clientToken: "",
+  //     };
+  //     const script = document.createElement("script");
+  //     script.type = "text/javascript";
+  //     script.src = `https://www.paypal.com/sdk/js?client-id=AZyy6akAuprcwc7ii-Rd3q7kIl-7HIjIwNJAkMur2jbEb3tAPnAfTTdN7Ciz5xwfGIu4ZxCtBPbeWpFe`;
+  //     script.setAttribute("data-client-token", `${data.clientToken}`);
+  //     script.async = true;
+  //     script.onload = () => {
+  //       setSdkReady(true);
+  //     };
+  //     document.body.appendChild(script);
+  //   };
+  //   addPayPalScript();
+  // }, []);
 
   const onSubmit = (values) => {
     console.log(values);

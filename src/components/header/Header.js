@@ -3,9 +3,10 @@ import { useGetTempleDetails } from "../../api/hooks";
 import logo from "../../assets/images/SBAT.png";
 import "./Header.css";
 function Header({ productId }) {
-  const { templeDetails, isLoading, isError } = useGetTempleDetails(productId);
-  if (isLoading) return <Typography>Loading</Typography>;
-  if (isError) return <Typography>Error</Typography>;
+  // const { templeDetails, isLoading, isError } = useGetTempleDetails(productId);
+  // if (isLoading) return <Typography>Loading</Typography>;
+  // if (isError) return <Typography>Error</Typography>;
+  const templeDetails = {};
   return (
     <header className="header-section">
       <img

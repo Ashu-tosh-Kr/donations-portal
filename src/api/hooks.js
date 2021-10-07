@@ -264,7 +264,7 @@ export const useAddToCart = () => {
         phone: localStorage.getItem("phone"),
         productId: localStorage.getItem("productId"),
         data: cartItems,
-        totalAmount: cartItems.reduce((sum, item) => sum + item.amount),
+        totalAmount: cartItems.reduce((total, next) => total + +next.amount, 0),
       };
       const res = await addToCartApi(data);
       return res.data;

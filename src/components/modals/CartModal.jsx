@@ -3,6 +3,8 @@ import Table from "antd/es/table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { PayPalButton } from "react-paypal-button-v2";
+
 const modalCardStyle = {
   minWidth: "20rem",
   width: { xs: "90%", sm: "70%", md: "60%", lg: "40%" },
@@ -54,6 +56,13 @@ const CartModal = ({
       ),
     },
   ];
+  const totalAmt = () => {
+    if (cartItems.length === 0) return 0;
+    else {
+      const amt = cartItems.reduce((total, next) => total + +next.amount, 0);
+      return amt;
+    }
+  };
   return (
     <>
       <Modal
@@ -109,7 +118,7 @@ const CartModal = ({
               }}
             />
 
-            <Button
+            {/* <Button
               onClick={() => {
                 handleCartSubmit();
               }}
@@ -118,7 +127,20 @@ const CartModal = ({
               color="primary"
             >
               Proceed To Checkout
-            </Button>
+            </Button> */}
+            {cartItems.length !== 0 ? (
+              <PayPalButton
+                amount={totalAmt()}
+                options={{
+                  clientId: process.env.PAYPAL_CLIENT_ID,
+                }}
+                shippingPreference="NO_SHIPPING"
+                onSuccess={(details, data) => {
+                  console.log(details, data);
+                  handleCartSubmit();
+                }}
+              />
+            ) : null}
           </Stack>
         </Box>
       </Modal>
