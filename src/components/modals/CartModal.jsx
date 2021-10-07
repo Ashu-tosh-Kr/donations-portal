@@ -137,8 +137,7 @@ const CartModal = ({
                 }}
                 shippingPreference="NO_SHIPPING"
                 onSuccess={(details, data) => {
-                  console.log(details, data);
-                  handleCartSubmit();
+                  handleCartSubmit(details.status, details.id);
                 }}
               />
             ) : null}

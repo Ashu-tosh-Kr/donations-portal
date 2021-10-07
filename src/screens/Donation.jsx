@@ -85,8 +85,8 @@ function Donation() {
     CustomToast("Removed From Cart");
   };
   const { mutateCart } = useAddToCart();
-  const handleCartSubmit = () => {
-    mutateCart(cartItems);
+  const handleCartSubmit = (status, id) => {
+    mutateCart(cartItems, status, id);
   };
   return (
     <>
