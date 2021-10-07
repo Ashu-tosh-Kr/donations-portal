@@ -1,5 +1,5 @@
-import { Typography } from "@mui/material";
-import { useGetTempleDetails } from "../../api/hooks";
+// import { Typography } from "@mui/material";
+// import { useGetTempleDetails } from "../../api/hooks";
 import logo from "../../assets/images/SBAT.png";
 import "./Header.css";
 function Header({ productId }) {

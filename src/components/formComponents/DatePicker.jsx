@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import { Field, useField } from "formik";
 const DatePicker = ({ name, ...rest }) => {
   const [field, meta] = useField(name);
+  console.log(field);
   const configDatePicker = {
     ...rest,
   };

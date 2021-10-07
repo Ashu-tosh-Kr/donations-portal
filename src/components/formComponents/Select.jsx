@@ -4,7 +4,7 @@ import { useState } from "react";
 const Select = ({ name, options, label, ...rest }) => {
   const [tempInput, setTempInput] = useState("");
   const [field, meta] = useField(name);
-
+  console.log(field);
   return (
     <Field name={name}>
       {({ form, field }) => {
@@ -19,6 +19,7 @@ const Select = ({ name, options, label, ...rest }) => {
               //we're changing the selectedState state wich is passed in get city use query and it triggers a city options refetch based on the new state
               const x =
                 name === "state" ? rest.setSelectedState(newValue) : null;
+              console.log(x);
             }}
             inputValue={tempInput}
             onInputChange={(event, newInputValue) => {
