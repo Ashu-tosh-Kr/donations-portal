@@ -4,6 +4,7 @@ import PageNotFound from "./screens/PageNotFound";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CustomToastContainer } from "./utils/CustomToast";
 import { red } from "@mui/material/colors";
+import Homepage from "./screens/Homepage";
 
 const theme = createTheme({
   palette: {
@@ -22,6 +23,7 @@ function App() {
       <div className="App">
         <CustomToastContainer />
         <Switch>
+          <Route path="/" exact component={Homepage} />
           <Route path="/donations/:productId" exact component={Donation} />
           <Route component={PageNotFound} />
         </Switch>
