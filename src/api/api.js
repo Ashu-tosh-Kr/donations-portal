@@ -23,7 +23,7 @@ export const getAllDonationOptionsApi = () =>
     },
     params: {
       actionId: "businesstypeprofile",
-      product: "895892fa-127e-4dbf-941e-3e4486a834af",
+      product: localStorage.getItem("productId"),
       dataJson: { aspectType: "Donation Setup" },
     },
   });
