@@ -185,3 +185,6 @@
 //     </>
 //   );
 // }
+export default function PaymentModal({ openPayModal, setOpenPayModal }) {
+  return <div></div>;
+}

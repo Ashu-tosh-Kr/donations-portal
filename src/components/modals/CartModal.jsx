@@ -132,7 +132,8 @@ const CartModal = ({
               <PayPalButton
                 amount={totalAmt()}
                 options={{
-                  clientId: process.env.PAYPAL_CLIENT_ID,
+                  clientId:
+                    "AfyhAU4oKtg93fUxjYTlPbHdeKnyRG6SaTaBMbLlys9kajgc1GP8qcSR9wBNY6CWuZLpht1JkVRYOflA",
                 }}
                 shippingPreference="NO_SHIPPING"
                 onSuccess={(details, data) => {

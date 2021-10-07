@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getTempleDetailsApi = (data) =>
   axios.post(
-    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/getTempleDetails`,
+    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/getProductDetails`,
     data
   );
 

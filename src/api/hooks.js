@@ -23,7 +23,7 @@ export const useGetTempleDetails = (productId) => {
   } = useQuery(
     "templeDetails",
     async () => {
-      const res = await getTempleDetailsApi();
+      const res = await getTempleDetailsApi({ productId: productId });
       return res.data;
     },
     {
