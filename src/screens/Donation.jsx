@@ -87,6 +87,8 @@ function Donation() {
   const { mutateCart } = useAddToCart();
   const handleCartSubmit = (status, id) => {
     mutateCart(cartItems, status, id);
+    setCartItems([]);
+    setOpenCartModal(false);
   };
   return (
     <>
