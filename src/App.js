@@ -1,10 +1,9 @@
-import { Route, Switch } from "react-router";
+import { Redirect, Route, Switch } from "react-router";
 import Donation from "./screens/Donation";
 import PageNotFound from "./screens/PageNotFound";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CustomToastContainer } from "./utils/CustomToast";
 import { red } from "@mui/material/colors";
-import Homepage from "./screens/Homepage";
 
 const theme = createTheme({
   palette: {
@@ -23,8 +22,11 @@ function App() {
       <div className="App">
         <CustomToastContainer />
         <Switch>
-          <Route path="/" exact component={Homepage} />
-          <Route path="/donations/:productId" exact component={Donation} />
+          <Route path="/donations/:productId" component={Donation} />
+          <Redirect
+            from="/"
+            to="/donations/895892fa-127e-4dbf-941e-3e4486a834af"
+          />
           <Route component={PageNotFound} />
         </Switch>
       </div>
