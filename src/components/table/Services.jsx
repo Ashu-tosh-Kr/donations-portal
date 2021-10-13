@@ -66,7 +66,9 @@ const Services = ({ options, addToCart }) => {
       render: (text) => (
         <Typography
           sx={{ fontSize: { xs: 14, md: 20 } }}
-        >{`$ ${text}.00`}</Typography>
+        >{`$ ${(+text).toLocaleString("en", {
+          useGrouping: true,
+        })}.00`}</Typography>
       ),
     },
     {

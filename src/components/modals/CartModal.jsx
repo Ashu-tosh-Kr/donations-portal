@@ -1,9 +1,11 @@
-import { Modal, Box, Typography, Button, Stack } from "@mui/material";
+import { Modal, Box, Typography, Button, Stack, Alert } from "@mui/material";
 import Table from "antd/es/table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { PayPalButton } from "react-paypal-button-v2";
+import { useGetTempleDetails } from "../../api/hooks";
+import { useParams } from "react-router";
 
 const modalCardStyle = {
   minWidth: "20rem",
@@ -32,7 +34,7 @@ const CartModal = ({
       ),
       dataIndex: "name",
       key: "donationType",
-      render: (text) => <h4>{text}</h4>,
+      render: (text) => <Typography variant="h6">{text}</Typography>,
     },
     {
       title: (
@@ -43,7 +45,11 @@ const CartModal = ({
       dataIndex: "amount",
       key: "amount",
       align: "right",
-      render: (text) => <h4>{`$ ${text}.00`}</h4>,
+      render: (text) => (
+        <Typography variant="h6">{`$ ${(+text).toLocaleString("en", {
+          useGrouping: true,
+        })}.00`}</Typography>
+      ),
     },
     {
       title: "",
@@ -63,6 +69,21 @@ const CartModal = ({
       return amt;
     }
   };
+  const { productId } = useParams();
+  const { templeDetails, isLoading, isError } = useGetTempleDetails(productId);
+
+  if (isLoading)
+    return (
+      <Alert sx={{ m: 3 }} severity="info">
+        Loading
+      </Alert>
+    );
+  if (isError)
+    return (
+      <Alert sx={{ m: 3 }} severity="danger">
+        Error
+      </Alert>
+    );
   return (
     <>
       <Modal
@@ -78,14 +99,52 @@ const CartModal = ({
               onClick={() => setOpenCartModal(false)}
               sx={{ marginLeft: "auto", marginTop: "1rem" }}
             />
-            <Button
-              sx={{ textAlign: "center", fontSize: 30, margin: "0 13rem" }}
+            <img
+              width="100"
+              height="100"
+              alt="logo"
+              style={{ margin: "0 auto" }}
+              src={templeDetails?.logo ? templeDetails.logo : null}
+            />
+            <h1 style={{ margin: "0 auto" }} className="">
+              {templeDetails?.title}
+            </h1>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontSize: 30,
+                margin: "0 13rem",
+                backgroundColor: "primary.main",
+                borderRadius: 3,
+                p: 1,
+                boxShadow: 1,
+              }}
               variant="contained"
-              color="primary"
-              startIcon={<ShoppingCartIcon />}
             >
-              {cartItems.length}
-            </Button>
+              <Typography
+                variant="h4"
+                sx={{ color: "white" }}
+                display="inline"
+                component="p"
+              >
+                CHECKOUT
+              </Typography>
+              <Box>
+                <ShoppingCartIcon
+                  sx={{ transform: "scale(1.5)", mx: 1, color: "white" }}
+                />
+                <Typography
+                  variant="h4"
+                  sx={{ color: "white" }}
+                  display="inline"
+                  component="p"
+                >
+                  {cartItems.length}
+                </Typography>
+              </Box>
+            </Box>
             <Table
               dataSource={cartItems}
               columns={COLUMNS}
@@ -109,8 +168,10 @@ const CartModal = ({
                         <Typography
                           color="primary"
                           sx={{ textAlign: "right" }}
-                          variant="h5"
-                        >{`$ ${totalAmount}.00`}</Typography>
+                          variant="h6"
+                        >{`$ ${(+totalAmount).toLocaleString("en", {
+                          useGrouping: true,
+                        })}.00`}</Typography>
                       </Table.Summary.Cell>
                     </Table.Summary.Row>
                   </>

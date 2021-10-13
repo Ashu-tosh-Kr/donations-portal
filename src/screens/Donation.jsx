@@ -42,10 +42,15 @@ const initialUserValues = {
 };
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email"),
-  phone: Yup.string().when("email", {
-    is: (email) => !email || email.length === 0,
-    then: Yup.string().required("Required"),
-  }),
+  phone: Yup.string()
+    .when("email", {
+      is: (email) => !email || email.length === 0,
+      then: Yup.string().required("Required"),
+    })
+    .matches(
+      /^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/,
+      "Invalid Phone Number"
+    ),
 });
 
 function Donation() {
@@ -139,7 +144,7 @@ function Donation() {
               onSubmit={onSubmit}
             >
               {(formik) => {
-                // console.log(formik.values.expires);
+                // console.log(formik.values.phone);
                 return (
                   <Form>
                     <Grid container spacing={2} sx={{ marginBottom: "1rem" }}>
@@ -147,7 +152,11 @@ function Donation() {
                         <Typography>Contact Information</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6} md={4}>
-                        <InputField name="email" label="Email" />
+                        <InputField
+                          name="email"
+                          label="Email"
+                          disabled={!!formik.values.phone}
+                        />
                       </Grid>
                       <Grid item xs={12} sm={1}>
                         <Typography
@@ -162,7 +171,19 @@ function Donation() {
                         </Typography>
                       </Grid>
                       <Grid item xs={12} sm={5} md={4}>
-                        <InputField name="phone" label="Phone" />
+                        <InputField
+                          name="phone"
+                          label="Phone"
+                          disabled={!!formik.values.email}
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                            let x = e.target.value;
+                            var index = x.lastIndexOf("-");
+                            var test = x.substr(index + 1);
+                            if (test.length === 3 && x.length < 8) x = x + "-";
+                            formik.setFieldValue("phone", x);
+                          }}
+                        />
                       </Grid>
 
                       <Grid item xs={12} md={3}>
