@@ -1,4 +1,11 @@
-import { Button, Modal, Typography, Box, Grid } from "@mui/material";
+import {
+  Button,
+  Modal,
+  Typography,
+  Box,
+  Grid,
+  CircularProgress,
+} from "@mui/material";
 import {
   useGetCityOptions,
   useGetGotraOptions,
@@ -11,7 +18,8 @@ import { Form, Formik } from "formik";
 import Select from "../formComponents/Select";
 import InputField from "../formComponents/InputField";
 import { useState } from "react";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import Header from "../header/Header";
+
 const modalCardStyle = {
   width: ["90%", "60%", "40%", "30%"],
   overflowY: "scroll",
@@ -25,10 +33,12 @@ const modalCardStyle = {
 const initialValues = {
   email: "",
   phone: "",
-  name: "",
+  firstName: "",
+  lastName: "",
   age: "",
   gotra: "",
   nakshatra: "",
+  memberType: "Volunteer",
   address: "",
   city: "",
   state: "",
@@ -37,50 +47,57 @@ const initialValues = {
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
   phone: Yup.string().required("Required"),
-  name: Yup.string().required("Required"),
+  firstName: Yup.string().required("Required"),
+  lastName: Yup.string().required("Required"),
   age: Yup.string().required("Required"),
   nakshatra: Yup.string().required("Required"),
   gotra: Yup.string().required("Required"),
+  memberType: Yup.string().required("Required"),
   address: Yup.string().required("Required"),
   city: Yup.string().required("Required"),
   state: Yup.string().required("Required"),
   zip: Yup.string().required("Required"),
 });
 
-const RegisterModal = ({
-  openRegisterModal,
-  setOpenRegisterModal,
-  setUserDetails,
-  setOpenNotRegisteredModal,
-}) => {
-  const { nakshatraOptions } = useGetNakshatraOptions();
-  const { gotraOptions } = useGetGotraOptions();
-  const { stateOptions } = useGetStateOptions();
+const RegisterModal = () => {
+  const { nakshatraOptions, isLoading: nakshatraLoading } =
+    useGetNakshatraOptions();
+  const { gotraOptions, isLoading: gotaLoading } = useGetGotraOptions();
+  const { stateOptions, isLoading: stateLoading } = useGetStateOptions();
   const [selectedState, setSelectedState] = useState("VIRGINIA");
-  const { cityOptions } = useGetCityOptions(selectedState);
-  const { mutateRegister } = useRegister(
-    setOpenRegisterModal,
-    setOpenNotRegisteredModal,
-    setUserDetails
-  );
+  const { cityOptions, isLoading: cityLoading } =
+    useGetCityOptions(selectedState);
+  const { mutateRegister } = useRegister();
   const onSubmit = (values) => {
     mutateRegister(values);
   };
-
+  if (cityLoading || stateLoading || gotaLoading || nakshatraLoading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          w: "100vw",
+          border: 1,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   return (
     <Modal
       sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-      open={openRegisterModal}
-      onClose={() => setOpenRegisterModal(false)}
+      open={true}
       aria-labelledby="register-modal"
       aria-describedby="Prompt user to register"
     >
       <Box sx={modalCardStyle}>
         <Grid container spacing={0}>
-          <CloseOutlinedIcon
-            onClick={() => setOpenRegisterModal(false)}
-            sx={{ marginLeft: "auto" }}
-          />
+          <Grid item xs={12}>
+            <Header />
+          </Grid>
           <Grid item xs={12}>
             <Typography
               color="primary"
@@ -101,20 +118,17 @@ const RegisterModal = ({
               return (
                 <Form>
                   <Grid container spacing={2}>
-                    {/* <Grid item xs={12}>
-                    <Typography>Contact Information</Typography>
-                  </Grid> */}
-                    <Grid item xs={12}>
-                      <InputField name="name" label="Name" />
+                    <Grid item xs={6}>
+                      <InputField name="firstName" label="First Name" />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputField name="lastName" label="Last Name" />
                     </Grid>
                     <Grid item xs={12}>
                       <InputField name="email" label="Email" />
                     </Grid>
                     <Grid item xs={12}>
                       <Grid container spacing={2}>
-                        {/* <Grid item xs={12}>
-                        <Typography>Donor Profile</Typography>
-                      </Grid> */}
                         <Grid item xs={9}>
                           <InputField name="phone" label="Phone" />
                         </Grid>
@@ -140,9 +154,13 @@ const RegisterModal = ({
                     </Grid>
                     <Grid item xs={12}>
                       <Grid container spacing={2}>
-                        {/* <Grid item xs={12}>
-                        <Typography>Address</Typography>
-                      </Grid> */}
+                        <Grid item xs={12}>
+                          <InputField
+                            disabled
+                            name="memberType"
+                            label="Member Type"
+                          />
+                        </Grid>
                         <Grid item xs={12}>
                           <InputField name="address" label="Address" />
                         </Grid>

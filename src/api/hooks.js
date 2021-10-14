@@ -1,16 +1,12 @@
 import { useMutation, useQuery } from "react-query";
 import { useHistory } from "react-router";
-import { v4 as uudi } from "uuid";
 import { CustomToast } from "../utils/CustomToast";
 import {
-  addToCartApi,
-  getAllDonationOptionsApi,
   getCityOptionsApi,
   getGotraOptionsApi,
   getNakshatraOptionsApi,
   getStateOptionsApi,
   getTempleDetailsApi,
-  getUserDetailsApi,
   registerApi,
 } from "./api";
 
@@ -40,11 +36,7 @@ export const useGetTempleDetails = (productId) => {
   return { templeDetails, isLoading, isError };
 };
 
-export const useRegister = (
-  setOpenRegisterModal,
-  setOpenNotRegisteredModal,
-  setUserDetails
-) => {
+export const useRegister = () => {
   const { mutate: mutateRegister } = useMutation(
     async (values) => {
       const payload = {
@@ -56,11 +48,8 @@ export const useRegister = (
     },
     {
       onSuccess: (data) => {
-        setUserDetails(data);
         localStorage.setItem("email", data.email ? data.email : "");
         localStorage.setItem("phone", data.phone ? data.phone : "");
-        setOpenRegisterModal(false);
-        setOpenNotRegisteredModal(false);
         CustomToast("You've been registered");
       },
       onError: (error) => {
@@ -70,85 +59,6 @@ export const useRegister = (
     }
   );
   return { mutateRegister };
-};
-
-export const useGetUserDetails = (
-  setUserDetails,
-  setOpenNotRegisteredModal
-) => {
-  const { mutate: mutateFetchUser } = useMutation(
-    "getUserDetails",
-    async (values) => {
-      const payload = {
-        ...values,
-        productId: localStorage.getItem("productId"),
-      };
-      const res = await getUserDetailsApi(payload);
-      const data = {
-        ...res.data.data[0],
-      };
-      return data;
-    },
-    {
-      onSuccess: (data) => {
-        setUserDetails(data);
-        console.log(data);
-        localStorage.setItem("email", data.email ? data.email : "");
-        localStorage.setItem("phone", data.phone ? data.phone : "");
-      },
-      onError: (error) => {
-        setOpenNotRegisteredModal(true);
-      },
-    }
-  );
-  return { mutateFetchUser };
-};
-
-export const useGetAllDonationOptions = () => {
-  const history = useHistory();
-  const {
-    data: donationOptions,
-    isLoading,
-    isError,
-  } = useQuery(
-    "allDonation",
-    async () => {
-      const res = await getAllDonationOptionsApi();
-      let donationsData = [];
-      res.data.data.forEach((rec) => {
-        let index = donationsData.findIndex(
-          (item) => item.typeName === rec.typeName
-        );
-        if (index === -1) {
-          donationsData.push({
-            typeName: rec.typeName,
-            types: [
-              {
-                name: rec.refDataName || "",
-                amount: rec.amount || 0,
-                key: uudi(),
-              },
-            ],
-          });
-        } else {
-          donationsData[index].types.push({
-            name: rec.refDataName || "",
-            amount: rec.amount || 0,
-            key: uudi(),
-          });
-        }
-      });
-      return donationsData;
-    },
-    {
-      onError: (error) => {
-        history.replace(history.location.pathname, {
-          errorStatusCode: error.response ? error.response.status : 500,
-        });
-      },
-    }
-  );
-  return { donationOptions, isLoading, isError };
 };
 
 export const useGetNakshatraOptions = () => {
@@ -254,34 +164,4 @@ export const useGetCityOptions = (state) => {
     }
   );
   return { cityOptions, isLoading, isError };
-};
-
-export const useAddToCart = () => {
-  const { mutate: mutateCart } = useMutation(
-    async (cartItems, status, id) => {
-      const data = {
-        email: localStorage.getItem("email"),
-        phone: localStorage.getItem("phone"),
-        productId: localStorage.getItem("productId"),
-        data: cartItems,
-        status,
-        id,
-        totalAmount: cartItems.reduce((total, next) => total + +next.amount, 0),
-      };
-      const res = await addToCartApi(data);
-      return res.data;
-    },
-    {
-      onSuccess: (data) => {
-        console.log(data);
-        CustomToast("Your cart items have been saved!");
-      },
-      onError: (error) => {
-        console.log(error);
-
-        CustomToast(error.response.data.message);
-      },
-    }
-  );
-  return { mutateCart };
 };
