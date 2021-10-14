@@ -3,8 +3,7 @@ import { Field, useField } from "formik";
 import { useState } from "react";
 const Select = ({ name, options, label, ...rest }) => {
   const [tempInput, setTempInput] = useState("");
-  const [field, meta] = useField(name);
-  console.log(field);
+  const [, meta] = useField(name);
   return (
     <Field name={name}>
       {({ form, field }) => {
@@ -17,9 +16,7 @@ const Select = ({ name, options, label, ...rest }) => {
               setFieldValue(name, newValue ? newValue : "");
               //once the user selects a new geographical state,
               //we're changing the selectedState state wich is passed in get city use query and it triggers a city options refetch based on the new state
-              const x =
-                name === "state" ? rest.setSelectedState(newValue) : null;
-              console.log(x);
+              if (name === "state") rest.setSelectedState(newValue);
             }}
             inputValue={tempInput}
             onInputChange={(event, newInputValue) => {
