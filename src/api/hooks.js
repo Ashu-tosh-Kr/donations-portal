@@ -1,13 +1,14 @@
+import { format } from "date-fns";
 import { useMutation, useQuery } from "react-query";
 import { useHistory } from "react-router";
-import { v4 as uudi } from "uuid";
 import { CustomToast } from "../utils/CustomToast";
 import {
-  addToCartApi,
-  getAllDonationOptionsApi,
+  addServiceRequestApi,
   getCityOptionsApi,
   getGotraOptionsApi,
+  getLocationOptionsApi,
   getNakshatraOptionsApi,
+  getServiceNameOptionsApi,
   getStateOptionsApi,
   getTempleDetailsApi,
   getUserDetailsApi,
@@ -102,53 +103,6 @@ export const useGetUserDetails = (
     }
   );
   return { mutateFetchUser };
-};
-
-export const useGetAllDonationOptions = () => {
-  const history = useHistory();
-  const {
-    data: donationOptions,
-    isLoading,
-    isError,
-  } = useQuery(
-    "allDonation",
-    async () => {
-      const res = await getAllDonationOptionsApi();
-      let donationsData = [];
-      res.data.data.forEach((rec) => {
-        let index = donationsData.findIndex(
-          (item) => item.typeName === rec.typeName
-        );
-        if (index === -1) {
-          donationsData.push({
-            typeName: rec.typeName,
-            types: [
-              {
-                name: rec.refDataName || "",
-                amount: rec.amount || 0,
-                key: uudi(),
-              },
-            ],
-          });
-        } else {
-          donationsData[index].types.push({
-            name: rec.refDataName || "",
-            amount: rec.amount || 0,
-            key: uudi(),
-          });
-        }
-      });
-      return donationsData;
-    },
-    {
-      onError: (error) => {
-        history.replace(history.location.pathname, {
-          errorStatusCode: error.response ? error.response.status : 500,
-        });
-      },
-    }
-  );
-  return { donationOptions, isLoading, isError };
 };
 
 export const useGetNakshatraOptions = () => {
@@ -256,32 +210,81 @@ export const useGetCityOptions = (state) => {
   return { cityOptions, isLoading, isError };
 };
 
-export const useAddToCart = () => {
-  const { mutate: mutateCart } = useMutation(
-    async (cartItems, status, id) => {
-      const data = {
+export const useLocationOptions = () => {
+  const history = useHistory();
+  const {
+    data: locationOptions,
+    isLoading,
+    isError,
+  } = useQuery(
+    "locationOptions",
+    async () => {
+      const res = await getLocationOptionsApi();
+      const data = res.data.data.map((itm) => {
+        return itm.location;
+      });
+      return [...data, ""];
+    },
+    {
+      onError: (error) => {
+        history.replace(history.location.pathname, {
+          errorStatusCode: error.response ? error.response.status : 500,
+        });
+      },
+    }
+  );
+  return { locationOptions, isLoading, isError };
+};
+
+export const useServiceNameOptions = () => {
+  const history = useHistory();
+  const {
+    data: serviceNameOptions,
+    isLoading,
+    isError,
+  } = useQuery(
+    "serviceNameOptions",
+    async () => {
+      const res = await getServiceNameOptionsApi();
+      const data = res.data.data.map((itm) => {
+        return itm.serviceName;
+      });
+      return [...data, ""];
+    },
+    {
+      onError: (error) => {
+        history.replace(history.location.pathname, {
+          errorStatusCode: error.response ? error.response.status : 500,
+        });
+      },
+    }
+  );
+  return { serviceNameOptions, isLoading, isError };
+};
+
+export const useAddServiceRequest = () => {
+  const { mutate: mutateServiceRequest } = useMutation(
+    async (values) => {
+      const payload = {
+        ...values,
         email: localStorage.getItem("email"),
         phone: localStorage.getItem("phone"),
         productId: localStorage.getItem("productId"),
-        data: cartItems,
-        status,
-        id,
-        totalAmount: cartItems.reduce((total, next) => total + +next.amount, 0),
+        date: format(values.date, "MM/dd/yyyy"),
+        time: format(values.time, "hh:mm a"),
       };
-      const res = await addToCartApi(data);
+      const res = await addServiceRequestApi(payload);
       return res.data;
     },
     {
       onSuccess: (data) => {
-        console.log(data);
-        CustomToast("Your cart items have been saved!");
+        CustomToast("Request Sent!");
       },
       onError: (error) => {
         console.log(error);
-
         CustomToast(error.response.data.message);
       },
     }
   );
-  return { mutateCart };
+  return { mutateServiceRequest };
 };

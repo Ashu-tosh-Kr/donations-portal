@@ -1,12 +1,12 @@
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import TimePickerMui from "@mui/lab/TimePicker";
 import TextField from "@mui/material/TextField";
 import { Field, useField } from "formik";
-const DatePicker = ({ name, ...rest }) => {
+const TimePicker = ({ name, ...rest }) => {
   const [, meta] = useField(name);
 
-  const configDatePicker = {
+  const configTimePicker = {
     ...rest,
   };
   return (
@@ -16,8 +16,8 @@ const DatePicker = ({ name, ...rest }) => {
         const { value } = field;
         return (
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DesktopDatePicker
-              {...configDatePicker}
+            <TimePickerMui
+              {...configTimePicker}
               renderInput={(params) => (
                 <TextField sx={{ width: "100%" }} {...params} />
               )}
@@ -32,4 +32,4 @@ const DatePicker = ({ name, ...rest }) => {
   );
 };
 
-export default DatePicker;
+export default TimePicker;

@@ -2,31 +2,17 @@ import { useState } from "react";
 
 import Header from "../components/header/Header";
 
-import {
-  useAddToCart,
-  useGetAllDonationOptions,
-  useGetUserDetails,
-} from "../api/hooks";
+import { useGetUserDetails } from "../api/hooks";
 import "antd/dist/antd.css";
 import PaymentModal from "../components/modals/PaymentModal";
 import { Formik, Form } from "formik";
-import {
-  Grid,
-  Button,
-  Typography,
-  Skeleton,
-  Alert,
-  Divider,
-  Badge,
-} from "@mui/material";
+import { Grid, Button, Typography, Alert, Divider } from "@mui/material";
 import InputField from "../components/formComponents/InputField";
 import NotRegisteredModal from "../components/modals/NotRegisteredModal";
-import CartModal from "../components/modals/CartModal";
 import * as Yup from "yup";
-import Services from "../components/table/Services";
 import { red } from "@mui/material/colors";
-import { CustomToast } from "../utils/CustomToast";
 import { useParams } from "react-router";
+import RequestForm from "../components/requestForm/RequestForm";
 
 const initialUserValues = {
   email: "",
@@ -54,12 +40,9 @@ const validationSchema = Yup.object().shape({
 });
 
 function Donation() {
-  const [openCartModal, setOpenCartModal] = useState(false);
   const [openPayModal, setOpenPayModal] = useState(false);
   //prop drilled to useRegister hook via Nonreg and reg modals
   const [openNotRegisteredModal, setOpenNotRegisteredModal] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const { donationOptions, isLoading, isError } = useGetAllDonationOptions();
   //prop drilled to useRegister hook via NotRegisteredModal and RegisterModal modals
   const [userDetails, setUserDetails] = useState(initialUserValues);
   const { productId } = useParams();
@@ -74,27 +57,7 @@ function Donation() {
       email: values.email,
     });
   };
-  const addToCart = (item) => {
-    const existItem = cartItems.find((itm) => itm.key === item.key);
-    if (!existItem) {
-      setCartItems([...cartItems, item]);
-      CustomToast("Added To Cart");
-    } else {
-      CustomToast("Already in Cart");
-    }
-  };
-  const removeFromCart = (item) => {
-    setCartItems((cartItems) =>
-      cartItems.filter((itm) => itm.key !== item.key)
-    );
-    CustomToast("Removed From Cart");
-  };
-  const { mutateCart } = useAddToCart();
-  const handleCartSubmit = (status, id) => {
-    mutateCart(cartItems, status, id);
-    setCartItems([]);
-    setOpenCartModal(false);
-  };
+
   return (
     <>
       <PaymentModal
@@ -106,14 +69,7 @@ function Donation() {
         openNotRegisteredModal={openNotRegisteredModal}
         setOpenNotRegisteredModal={setOpenNotRegisteredModal}
       />
-      <CartModal
-        openCartModal={openCartModal}
-        setOpenCartModal={setOpenCartModal}
-        cartItems={cartItems}
-        removeFromCart={removeFromCart}
-        setOpenPayModal={setOpenPayModal}
-        handleCartSubmit={handleCartSubmit}
-      />
+
       <>
         <Header productId={productId} />
         <Grid container spacing={2}>
@@ -248,46 +204,13 @@ function Donation() {
           <Grid item sx={{ margin: "1rem" }} xs={12}>
             <Divider variant="middle" />
           </Grid>
-          {isLoading ? (
-            <Skeleton
-              animation="wave"
-              variant="rectangular"
-              width="full"
-              sx={{ borderRadius: "5px" }}
-              height={200}
-            />
-          ) : isError ? (
-            <Grid sx={{ margin: "0 auto" }} item xs={11}>
-              <Typography>"Oops! There was an error!"</Typography>
-            </Grid>
-          ) : (
-            <>
-              <Grid sx={{ margin: "0 auto" }} item xs={11}>
-                <Services options={donationOptions} addToCart={addToCart} />
-              </Grid>
-              <Grid
-                sx={{
-                  margin: "1rem auto",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-                item
-                xs={12}
-              >
-                <Badge badgeContent={cartItems.length} color="secondary">
-                  <Button
-                    type="primary"
-                    variant="contained"
-                    onClick={() => setOpenCartModal(true)}
-                    sx={{ width: [150, 150, 200], fontSize: [16, null, 20] }}
-                    size="large"
-                  >
-                    Cart
-                  </Button>
-                </Badge>
-              </Grid>
-            </>
-          )}
+          <Grid
+            item
+            sx={{ display: "flex", justifyContent: "center", w: 100 }}
+            xs={12}
+          >
+            <RequestForm />
+          </Grid>
         </Grid>
       </>
     </>

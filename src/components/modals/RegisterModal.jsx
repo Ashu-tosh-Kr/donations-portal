@@ -36,7 +36,12 @@ const initialValues = {
 };
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
-  phone: Yup.string().required("Required"),
+  phone: Yup.string()
+    .required("Required")
+    .matches(
+      /^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/,
+      "Invalid Phone Number"
+    ),
   name: Yup.string().required("Required"),
   age: Yup.string().required("Required"),
   nakshatra: Yup.string().required("Required"),
@@ -116,7 +121,19 @@ const RegisterModal = ({
                         <Typography>Donor Profile</Typography>
                       </Grid> */}
                         <Grid item xs={9}>
-                          <InputField name="phone" label="Phone" />
+                          <InputField
+                            name="phone"
+                            label="Phone"
+                            onChange={(e) => {
+                              formik.handleChange(e);
+                              let x = e.target.value;
+                              var index = x.lastIndexOf("-");
+                              var test = x.substr(index + 1);
+                              if (test.length === 3 && x.length < 8)
+                                x = x + "-";
+                              formik.setFieldValue("phone", x);
+                            }}
+                          />
                         </Grid>
                         <Grid item xs={3}>
                           <InputField name="age" label="Age" />

@@ -16,17 +16,7 @@ export const registerApi = (data) =>
     `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/addClientDetails`,
     data
   );
-export const getAllDonationOptionsApi = () =>
-  axios.get(`${process.env.REACT_APP_BASE_URL}/user/services/getCommonData`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    params: {
-      actionId: "businesstypeprofile",
-      product: localStorage.getItem("productId"),
-      dataJson: { aspectType: "Donation Setup" },
-    },
-  });
+
 export const getNakshatraOptionsApi = () =>
   axios.post(`${process.env.REACT_APP_BASE_URL}/user/services/getNakshatra`, {
     productId: localStorage.getItem("productId"),
@@ -53,8 +43,22 @@ export const getCityOptionsApi = (stateName) =>
     }
   );
 
-export const addToCartApi = (data) =>
+export const getLocationOptionsApi = () =>
   axios.post(
-    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/addCartData`,
+    `${process.env.REACT_APP_BASE_URL}/business/services/getLocation`,
+    {
+      productId: localStorage.getItem("productId"),
+    }
+  );
+export const getServiceNameOptionsApi = () =>
+  axios.post(
+    `${process.env.REACT_APP_BASE_URL}/business/services/getServiceName`,
+    {
+      productId: localStorage.getItem("productId"),
+    }
+  );
+export const addServiceRequestApi = (data) =>
+  axios.post(
+    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/addServiceRequest`,
     data
   );
