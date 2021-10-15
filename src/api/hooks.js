@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "react-query";
 import { useHistory } from "react-router";
 import { CustomToast } from "../utils/CustomToast";
 import {
-  addServiceRequestApi,
+  addSubscriberApi,
   getCityOptionsApi,
   getGotraOptionsApi,
   getLocationOptionsApi,
@@ -262,23 +262,21 @@ export const useServiceNameOptions = () => {
   return { serviceNameOptions, isLoading, isError };
 };
 
-export const useAddServiceRequest = () => {
-  const { mutate: mutateServiceRequest } = useMutation(
+export const useAddSubscriber = () => {
+  const { mutate: mutateSubscribe } = useMutation(
     async (values) => {
       const payload = {
         ...values,
-        email: localStorage.getItem("email"),
-        phone: localStorage.getItem("phone"),
+
         productId: localStorage.getItem("productId"),
-        date: format(values.date, "MM/dd/yyyy"),
-        time: format(values.time, "hh:mm a"),
       };
-      const res = await addServiceRequestApi(payload);
+      const res = await addSubscriberApi(payload);
       return res.data;
     },
     {
       onSuccess: (data) => {
-        CustomToast("Request Sent!");
+        CustomToast("Subscribed!");
+        console.log(data);
       },
       onError: (error) => {
         console.log(error);
@@ -286,5 +284,5 @@ export const useAddServiceRequest = () => {
       },
     }
   );
-  return { mutateServiceRequest };
+  return { mutateSubscribe };
 };

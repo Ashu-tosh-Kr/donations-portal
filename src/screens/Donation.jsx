@@ -90,7 +90,7 @@ function Donation() {
                   },
                 }}
               >
-                SUBSCRIPTION
+                SUBSCRIPTION FORM
               </Divider>
             </Typography>
             <Formik

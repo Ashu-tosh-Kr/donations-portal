@@ -57,8 +57,8 @@ export const getServiceNameOptionsApi = () =>
       productId: localStorage.getItem("productId"),
     }
   );
-export const addServiceRequestApi = (data) =>
+export const addSubscriberApi = (data) =>
   axios.post(
-    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/addServiceRequest`,
+    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/addSubscriber`,
     data
   );

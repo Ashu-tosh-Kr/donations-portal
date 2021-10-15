@@ -6,7 +6,7 @@ import {
   Radio,
 } from "@mui/material";
 import { Field } from "formik";
-const CheckBoxGroup = ({ name, label, ...rest }) => {
+const CheckBoxGroup = ({ name, label, options, ...rest }) => {
   return (
     <Field name={name}>
       {({ form, field }) => {
@@ -21,14 +21,16 @@ const CheckBoxGroup = ({ name, label, ...rest }) => {
               defaultValue="female"
               name="radio-buttons-group"
               value={value}
-              onChange={(val) => setFieldValue(name, val)}
+              onChange={(e) => setFieldValue(name, e.target.value)}
             >
-              <FormControlLabel
-                value="female"
-                control={<Radio />}
-                label="Female"
-              />
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              {options.map((option, i) => (
+                <FormControlLabel
+                  key={i}
+                  value={option.value}
+                  control={<Radio />}
+                  label={option.label}
+                />
+              ))}
             </RadioGroup>
           </FormControl>
         );
