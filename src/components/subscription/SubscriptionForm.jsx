@@ -55,19 +55,7 @@ const SubscriptionForm = () => {
     mutateSubscribe(values);
     resetForm(initialValues);
   };
-  if (false)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          w: "100%",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+
   return (
     <Grid sx={{ mx: 4, mb: 2 }} container spacing={2}>
       <Grid item xs={12}>
