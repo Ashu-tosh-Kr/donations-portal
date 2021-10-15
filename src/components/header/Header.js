@@ -1,8 +1,10 @@
 import { Alert, CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
+import { useParams } from "react-router";
 import { useGetTempleDetails } from "../../api/hooks";
 import "./Header.css";
-function Header({ productId }) {
+function Header() {
+  const { productId } = useParams();
   const { templeDetails, isLoading, isError } = useGetTempleDetails(productId);
   if (isLoading)
     return (
@@ -25,12 +27,7 @@ function Header({ productId }) {
     );
   return (
     <header className="header-section">
-      <img
-        width="100"
-        height="100"
-        alt="logo"
-        src={templeDetails?.logo ? templeDetails.logo : null}
-      />
+      <img width="100" height="100" alt="logo" src={templeDetails?.logo} />
       <h1 className="title-cls">{templeDetails?.title}</h1>
     </header>
   );
