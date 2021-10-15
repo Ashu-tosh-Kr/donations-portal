@@ -15,7 +15,7 @@ import {
 
 const initialValues = {
   date: Date.now(),
-  time: new Date().setHours(0, 0, 0, 0),
+  time: new Date().setHours(7, 0, 0, 0),
   location: "",
   serviceName: "",
   notes: "",
