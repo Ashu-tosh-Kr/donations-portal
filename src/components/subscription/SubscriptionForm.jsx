@@ -54,7 +54,6 @@ const SubscriptionForm = () => {
   const onSubmit = (values, { resetForm }) => {
     mutateSubscribe(values);
     resetForm(initialValues);
-    console.log(values);
   };
   if (false)
     return (

@@ -276,7 +276,6 @@ export const useAddSubscriber = () => {
     {
       onSuccess: (data) => {
         CustomToast("Subscribed!");
-        console.log(data);
       },
       onError: (error) => {
         console.log(error);
