@@ -12,7 +12,7 @@ import NotRegisteredModal from "../components/modals/NotRegisteredModal";
 import * as Yup from "yup";
 import { red } from "@mui/material/colors";
 import { useParams } from "react-router";
-import RequestForm from "../components/requestForm/RequestForm";
+import SubscriptionForm from "../components/subscription/SubscriptionForm";
 
 const initialUserValues = {
   email: "",
@@ -90,7 +90,7 @@ function Donation() {
                   },
                 }}
               >
-                SEVICE REQUEST
+                SUBSCRIPTION
               </Divider>
             </Typography>
             <Formik
@@ -209,7 +209,7 @@ function Donation() {
             sx={{ display: "flex", justifyContent: "center", w: 100 }}
             xs={12}
           >
-            <RequestForm />
+            <SubscriptionForm />
           </Grid>
         </Grid>
       </>

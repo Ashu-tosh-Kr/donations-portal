@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
   notes: Yup.string().required("Required"),
 });
 
-const RequestForm = () => {
+const SubscriptionForm = () => {
   const { locationOptions, isLoading: locationsLoading } = useLocationOptions();
   const { serviceNameOptions, isLoading: serviceNameLoading } =
     useServiceNameOptions();
@@ -57,10 +57,6 @@ const RequestForm = () => {
       <Grid item xs={12}>
         <Box sx={{ height: 30, bgcolor: "primary.main" }}></Box>
       </Grid>
-      <Grid item xs={6}></Grid>
-      <Grid item xs={6}></Grid>
-      <Grid item xs={6}></Grid>
-      <Grid item xs={6}></Grid>
       <Grid item xs={12}>
         <Formik
           enableReinitialize
@@ -128,4 +124,4 @@ const RequestForm = () => {
   );
 };
 
-export default RequestForm;
+export default SubscriptionForm;
