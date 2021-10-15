@@ -1,6 +1,5 @@
 import { Grid, Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { CircularProgress } from "@mui/material";
 import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import { useAddSubscriber } from "../../api/hooks";
