@@ -27,7 +27,16 @@ const CheckBoxGroup = ({ name, label, options, ...rest }) => {
                 <FormControlLabel
                   key={i}
                   value={option.value}
-                  control={<Radio />}
+                  control={
+                    <Radio
+                      sx={{
+                        "& .MuiSvgIcon-root": {
+                          fontSize: 35,
+                        },
+                      }}
+                      {...rest}
+                    />
+                  }
                   label={option.label}
                 />
               ))}

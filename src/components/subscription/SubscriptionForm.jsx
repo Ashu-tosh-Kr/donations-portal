@@ -6,20 +6,11 @@ import { useAddSubscriber } from "../../api/hooks";
 import InputField from "../formComponents/InputField";
 import RadioGroup from "../formComponents/RadioGroup";
 
-const initialValues = {
-  phone: "",
-  alternativePhone: "",
-  email: "",
-  alternativeEmail: "",
-  phoneRequired: "YES",
-  emailRequired: "YES",
-  subscriptionRequired: "YES",
-};
-
 const validationSchema = Yup.object().shape({
   phone: Yup.string()
-    .when("phoneRequired", {
-      is: (phoneRequired) => phoneRequired === "YES",
+    .when(["phoneRequired", "subscriptionRequired"], {
+      is: (phoneRequired, subscriptionRequired) =>
+        phoneRequired === "YES" && subscriptionRequired == "YES",
       then: Yup.string().required("Required"),
     })
     .matches(
@@ -32,8 +23,9 @@ const validationSchema = Yup.object().shape({
   ),
   email: Yup.string()
     .email("Invalid email")
-    .when("emailRequired", {
-      is: (emailRequired) => emailRequired === "YES",
+    .when(["emailRequired", "subscriptionRequired"], {
+      is: (emailRequired, subscriptionRequired) =>
+        emailRequired === "YES" && subscriptionRequired === "YES",
       then: Yup.string().required("Required"),
     }),
   alternativeEmail: Yup.string().email("Invalid email"),
@@ -47,7 +39,17 @@ const options = [
   { label: "NO", value: "NO" },
 ];
 
-const SubscriptionForm = () => {
+const SubscriptionForm = ({ userDetails }) => {
+  const initialValues = {
+    phone: userDetails.phone,
+    alternativePhone: "",
+    email: userDetails.email,
+    alternativeEmail: "",
+    phoneRequired: "YES",
+    emailRequired: "YES",
+    subscriptionRequired: "YES",
+  };
+
   const { mutateSubscribe } = useAddSubscriber();
 
   const onSubmit = (values, { resetForm }) => {
@@ -58,7 +60,11 @@ const SubscriptionForm = () => {
   return (
     <Grid sx={{ mx: 4, mb: 2 }} container spacing={2}>
       <Grid item xs={12}>
-        <Box sx={{ height: 30, bgcolor: "primary.main" }}></Box>
+        <Box sx={{ height: 40, bgcolor: "primary.main" }}>
+          <Typography sx={{ textAlign: "center", color: "white" }} variant="h4">
+            Communication Preferences
+          </Typography>
+        </Box>
       </Grid>
       <Grid item xs={12}>
         <Formik
@@ -74,7 +80,7 @@ const SubscriptionForm = () => {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Typography variant="h4" sx={{ textAlign: "center" }}>
-                      Subscribe To Our Temple Newsletter
+                      Subscribe To Our Temple Communications
                     </Typography>
                   </Grid>
                   <Grid
@@ -89,12 +95,17 @@ const SubscriptionForm = () => {
                     />
                   </Grid>
                   <Grid item xs={6} md={5}>
-                    <InputField name="email" label="Email" />
+                    <InputField
+                      name="email"
+                      label="Email"
+                      disabled={formik.values.subscriptionRequired !== "YES"}
+                    />
                   </Grid>
                   <Grid item xs={6} md={5}>
                     <InputField
                       name="alternativeEmail"
                       label="Alternate Email"
+                      disabled={formik.values.subscriptionRequired !== "YES"}
                     />
                   </Grid>
                   <Grid
@@ -107,6 +118,7 @@ const SubscriptionForm = () => {
                       name="emailRequired"
                       // label="Email"
                       options={options}
+                      disabled={formik.values.subscriptionRequired !== "YES"}
                     />
                   </Grid>
 
@@ -122,6 +134,7 @@ const SubscriptionForm = () => {
                         if (test.length === 3 && x.length < 8) x = x + "-";
                         formik.setFieldValue("phone", x);
                       }}
+                      disabled={formik.values.subscriptionRequired !== "YES"}
                     />
                   </Grid>
                   <Grid item xs={6} md={5}>
@@ -136,6 +149,7 @@ const SubscriptionForm = () => {
                         if (test.length === 3 && x.length < 8) x = x + "-";
                         formik.setFieldValue("alternativePhone", x);
                       }}
+                      disabled={formik.values.subscriptionRequired !== "YES"}
                     />
                   </Grid>
                   <Grid
@@ -148,6 +162,7 @@ const SubscriptionForm = () => {
                       name="phoneRequired"
                       // label="Email"
                       options={options}
+                      disabled={formik.values.subscriptionRequired !== "YES"}
                     />
                   </Grid>
                   <Grid
@@ -159,12 +174,13 @@ const SubscriptionForm = () => {
                       type="primary"
                       variant="contained"
                       sx={{
-                        width: [150, 150, 200],
+                        mt: 5,
+                        width: [150, 175, 250],
                         fontSize: [16, null, 20],
                       }}
                       size="large"
                     >
-                      Subscribe
+                      Save Preferences
                     </Button>
                   </Grid>
                 </Grid>

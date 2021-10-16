@@ -209,7 +209,7 @@ function Donation() {
             sx={{ display: "flex", justifyContent: "center", w: 100 }}
             xs={12}
           >
-            <SubscriptionForm />
+            <SubscriptionForm userDetails={userDetails} />
           </Grid>
         </Grid>
       </>
