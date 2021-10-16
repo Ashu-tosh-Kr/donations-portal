@@ -10,7 +10,7 @@ const validationSchema = Yup.object().shape({
   phone: Yup.string()
     .when(["phoneRequired", "subscriptionRequired"], {
       is: (phoneRequired, subscriptionRequired) =>
-        phoneRequired === "YES" && subscriptionRequired == "YES",
+        phoneRequired === "YES" && subscriptionRequired === "YES",
       then: Yup.string().required("Required"),
     })
     .matches(
