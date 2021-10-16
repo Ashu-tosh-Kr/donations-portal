@@ -52,7 +52,7 @@ const validationSchema = Yup.object().shape({
     ),
 });
 
-function Donation() {
+function Catering() {
   const [openCartModal, setOpenCartModal] = useState(false);
   const [openPayModal, setOpenPayModal] = useState(false);
   //prop drilled to useRegister hook via Nonreg and reg modals
@@ -132,7 +132,7 @@ function Donation() {
                   },
                 }}
               >
-                DONATIONS
+                CATERING ORDERS
               </Divider>
             </Typography>
             <Formik
@@ -292,4 +292,4 @@ function Donation() {
   );
 }
 
-export default Donation;
+export default Catering;

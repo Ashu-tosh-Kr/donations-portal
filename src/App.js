@@ -1,5 +1,5 @@
 import { Redirect, Route, Switch } from "react-router";
-import Donation from "./screens/Donation";
+import Catering from "./screens/Catering";
 import PageNotFound from "./screens/PageNotFound";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CustomToastContainer } from "./utils/CustomToast";
@@ -22,7 +22,7 @@ function App() {
       <div className="App">
         <CustomToastContainer />
         <Switch>
-          <Route path="/donations/:productId" component={Donation} />
+          <Route path="/donations/:productId" component={Catering} />
           <Redirect
             from="/"
             to="/donations/895892fa-127e-4dbf-941e-3e4486a834af"
