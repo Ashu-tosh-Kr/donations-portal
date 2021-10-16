@@ -90,7 +90,7 @@ function Donation() {
                   },
                 }}
               >
-                SEVICE REQUEST
+                SERVICE REQUEST
               </Divider>
             </Typography>
             <Formik
