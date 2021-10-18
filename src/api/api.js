@@ -25,12 +25,15 @@ export const getCateringMenuDetailsApi = () =>
     }
   );
 export const getNakshatraOptionsApi = () =>
-  axios.post(`${process.env.REACT_APP_BASE_URL}/user/services/getNakshatra`, {
-    productId: localStorage.getItem("productId"),
-  });
+  axios.post(
+    `${process.env.REACT_APP_BASE_URL}/business/services/getNakshatra`,
+    {
+      productId: localStorage.getItem("productId"),
+    }
+  );
 
 export const getGotraOptionsApi = () =>
-  axios.post(`${process.env.REACT_APP_BASE_URL}/user/services/getGotra`, {
+  axios.post(`${process.env.REACT_APP_BASE_URL}/business/services/getGotra`, {
     productId: localStorage.getItem("productId"),
   });
 
