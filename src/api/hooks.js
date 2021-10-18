@@ -1,10 +1,9 @@
 import { useMutation, useQuery } from "react-query";
 import { useHistory } from "react-router";
-import { v4 as uudi } from "uuid";
 import { CustomToast } from "../utils/CustomToast";
 import {
   addToCartApi,
-  getAllDonationOptionsApi,
+  getCateringMenuDetailsApi,
   getCityOptionsApi,
   getGotraOptionsApi,
   getNakshatraOptionsApi,
@@ -104,42 +103,18 @@ export const useGetUserDetails = (
   return { mutateFetchUser };
 };
 
-export const useGetAllDonationOptions = () => {
+export const useGetCateringMenuDetails = () => {
   const history = useHistory();
   const {
-    data: donationOptions,
+    data: cateringMenuDetails,
     isLoading,
     isError,
   } = useQuery(
     "allDonation",
     async () => {
-      const res = await getAllDonationOptionsApi();
-      let donationsData = [];
-      res.data.data.forEach((rec) => {
-        let index = donationsData.findIndex(
-          (item) => item.typeName === rec.typeName
-        );
-        if (index === -1) {
-          donationsData.push({
-            typeName: rec.typeName,
-            types: [
-              {
-                name: rec.refDataName || "",
-                amount: rec.amount || 0,
-                key: uudi(),
-              },
-            ],
-          });
-        } else {
-          donationsData[index].types.push({
-            name: rec.refDataName || "",
-            amount: rec.amount || 0,
-            key: uudi(),
-          });
-        }
-      });
-      // console.log(donationsData);
-      return donationsData;
+      const res = await getCateringMenuDetailsApi();
+
+      return res.data.data;
     },
     {
       onError: (error) => {
@@ -149,7 +124,7 @@ export const useGetAllDonationOptions = () => {
       },
     }
   );
-  return { donationOptions, isLoading, isError };
+  return { cateringMenuDetails, isLoading, isError };
 };
 
 export const useGetNakshatraOptions = () => {

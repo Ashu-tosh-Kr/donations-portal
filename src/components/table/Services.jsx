@@ -37,7 +37,7 @@ const Services = ({ options, addToCart }) => {
           Service Name
         </Typography>
       ),
-      dataIndex: "name",
+      dataIndex: "itemName",
       key: "donationType",
       render: (text) => (
         <Typography sx={{ fontSize: { xs: 14, md: 20 } }}>{text}</Typography>
@@ -66,9 +66,9 @@ const Services = ({ options, addToCart }) => {
       render: (text) => (
         <Typography
           sx={{ fontSize: { xs: 14, md: 20 } }}
-        >{`$ ${(+text).toLocaleString("en", {
+        >{`$ ${text.toLocaleString("en", {
           useGrouping: true,
-        })}.00`}</Typography>
+        })}`}</Typography>
       ),
     },
     {
@@ -133,7 +133,7 @@ const Services = ({ options, addToCart }) => {
                 },
               }}
               key={index}
-              label={option.typeName}
+              label={option.categoryName}
             />
           ))}
         </Tabs>
@@ -143,7 +143,7 @@ const Services = ({ options, addToCart }) => {
         return (
           <TabPanel key={index} value={selectedTab} index={index}>
             <Table
-              dataSource={option.types}
+              dataSource={option.categoryItems}
               columns={COLUMNS}
               pagination={false}
               bordered

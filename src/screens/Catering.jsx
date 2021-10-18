@@ -4,7 +4,7 @@ import Header from "../components/header/Header";
 
 import {
   useAddToCart,
-  useGetAllDonationOptions,
+  useGetCateringMenuDetails,
   useGetUserDetails,
 } from "../api/hooks";
 import "antd/dist/antd.css";
@@ -58,7 +58,8 @@ function Catering() {
   //prop drilled to useRegister hook via Nonreg and reg modals
   const [openNotRegisteredModal, setOpenNotRegisteredModal] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-  const { donationOptions, isLoading, isError } = useGetAllDonationOptions();
+  const { cateringMenuDetails, isLoading, isError } =
+    useGetCateringMenuDetails();
   //prop drilled to useRegister hook via NotRegisteredModal and RegisterModal modals
   const [userDetails, setUserDetails] = useState(initialUserValues);
 
@@ -261,7 +262,7 @@ function Catering() {
           ) : (
             <>
               <Grid sx={{ margin: "0 auto" }} item xs={11}>
-                <Services options={donationOptions} addToCart={addToCart} />
+                <Services options={cateringMenuDetails} addToCart={addToCart} />
               </Grid>
               <Grid
                 sx={{

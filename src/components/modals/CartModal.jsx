@@ -40,7 +40,7 @@ const CartModal = ({
           Service Name
         </Typography>
       ),
-      dataIndex: "name",
+      dataIndex: "itemName",
       key: "donationType",
       render: (text) => <Typography variant="h6">{text}</Typography>,
     },
@@ -54,9 +54,9 @@ const CartModal = ({
       key: "amount",
       align: "right",
       render: (text) => (
-        <Typography variant="h6">{`$ ${(+text).toLocaleString("en", {
+        <Typography variant="h6">{`$ ${text.toLocaleString("en", {
           useGrouping: true,
-        })}.00`}</Typography>
+        })}`}</Typography>
       ),
     },
     {
@@ -181,9 +181,9 @@ const CartModal = ({
                             color="primary"
                             sx={{ textAlign: "right" }}
                             variant="h6"
-                          >{`$ ${(+totalAmount).toLocaleString("en", {
+                          >{`$ ${totalAmount.toFixed(2).toLocaleString("en", {
                             useGrouping: true,
-                          })}.00`}</Typography>
+                          })}`}</Typography>
                         </Table.Summary.Cell>
                       </Table.Summary.Row>
                     </>
