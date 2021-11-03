@@ -234,7 +234,7 @@ export const useGetCityOptions = (state) => {
 
 export const useAddToCart = () => {
   const { mutate: mutateCart } = useMutation(
-    async (cartItems, status, id) => {
+    async ({ cartItems, status, id }) => {
       const data = {
         email: localStorage.getItem("email"),
         phone: localStorage.getItem("phone"),

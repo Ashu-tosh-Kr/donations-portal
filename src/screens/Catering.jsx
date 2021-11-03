@@ -90,7 +90,7 @@ function Catering() {
   };
   const { mutateCart } = useAddToCart();
   const handleCartSubmit = (status, id) => {
-    mutateCart(cartItems, status, id);
+    mutateCart({ cartItems, status, id });
     setCartItems([]);
     setOpenCartModal(false);
   };
