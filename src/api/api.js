@@ -13,7 +13,7 @@ export const getUserDetailsApi = (data) =>
   );
 export const registerApi = (data) =>
   axios.post(
-    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/addClientDetails`,
+    `${process.env.REACT_APP_BASE_URL}/business/services/nonprofit/addVolunteerDetails`,
     data
   );
 export const getAllDonationOptionsApi = () =>
