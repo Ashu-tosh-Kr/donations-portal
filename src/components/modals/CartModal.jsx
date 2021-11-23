@@ -12,8 +12,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { PayPalButton } from "react-paypal-button-v2";
-import { useGetTempleDetails } from "../../api/hooks";
-import { useParams } from "react-router";
+// import { useGetTempleDetails } from "../../api/hooks";
+// import { useParams } from "react-router";
 
 const modalCardStyle = {
   minWidth: "20rem",
