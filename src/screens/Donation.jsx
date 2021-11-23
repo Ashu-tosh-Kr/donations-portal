@@ -5,6 +5,7 @@ import Header from "../components/header/Header";
 import {
   useAddToCart,
   useGetAllDonationOptions,
+  useGetTempleDetails,
   useGetUserDetails,
 } from "../api/hooks";
 import "antd/dist/antd.css";
@@ -18,6 +19,7 @@ import {
   Alert,
   Divider,
   Badge,
+  CircularProgress,
 } from "@mui/material";
 import InputField from "../components/formComponents/InputField";
 import NotRegisteredModal from "../components/modals/NotRegisteredModal";
@@ -26,6 +28,8 @@ import * as Yup from "yup";
 import Services from "../components/table/Services";
 import { red } from "@mui/material/colors";
 import { CustomToast } from "../utils/CustomToast";
+import { useParams } from "react-router";
+import { Box } from "@mui/system";
 
 const initialUserValues = {
   email: "",
@@ -62,6 +66,13 @@ function Donation() {
   //prop drilled to useRegister hook via NotRegisteredModal and RegisterModal modals
   const [userDetails, setUserDetails] = useState(initialUserValues);
 
+  const { productId } = useParams();
+  const {
+    templeDetails,
+    isLoading: templeDetailsLoading,
+    isError: templeDetailsError,
+  } = useGetTempleDetails(productId);
+
   const { mutateFetchUser } = useGetUserDetails(
     setUserDetails,
     setOpenNotRegisteredModal
@@ -93,6 +104,36 @@ function Donation() {
     setCartItems([]);
     setOpenCartModal(false);
   };
+  if (templeDetailsLoading) {
+    return (
+      <Box
+        sx={{
+          w: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+  if (templeDetailsError) {
+    return (
+      <Box
+        sx={{
+          w: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        Error
+      </Box>
+    );
+  }
   return (
     <>
       <PaymentModal
@@ -111,6 +152,9 @@ function Donation() {
         removeFromCart={removeFromCart}
         setOpenPayModal={setOpenPayModal}
         handleCartSubmit={handleCartSubmit}
+        templeDetails={templeDetails}
+        templeDetailsLoading={templeDetailsLoading}
+        templeDetailsError={templeDetailsError}
       />
       <>
         <Header />
