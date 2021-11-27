@@ -12,8 +12,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { PayPalButton } from "react-paypal-button-v2";
-import { useGetTempleDetails } from "../../api/hooks";
-import { useParams } from "react-router";
 
 const modalCardStyle = {
   minWidth: "20rem",
@@ -32,6 +30,9 @@ const CartModal = ({
   cartItems,
   removeFromCart,
   handleCartSubmit,
+  templeDetails,
+  templeDetailsLoading,
+  templeDetailsError,
 }) => {
   const COLUMNS = [
     {
@@ -77,8 +78,6 @@ const CartModal = ({
       return amt;
     }
   };
-  const { productId } = useParams();
-  const { templeDetails, isLoading, isError } = useGetTempleDetails(productId);
 
   return (
     <>
@@ -89,7 +88,7 @@ const CartModal = ({
         aria-labelledby="cart-modal"
         aria-describedby="Open Cart"
       >
-        {isLoading ? (
+        {templeDetailsLoading ? (
           <Box
             sx={{
               display: "flex",
@@ -100,7 +99,7 @@ const CartModal = ({
           >
             <CircularProgress />
           </Box>
-        ) : isError ? (
+        ) : templeDetailsError ? (
           <Alert sx={{ m: 3 }} severity="danger">
             Error
           </Alert>
@@ -205,8 +204,7 @@ const CartModal = ({
                 <PayPalButton
                   amount={totalAmt()}
                   options={{
-                    clientId:
-                      "AfyhAU4oKtg93fUxjYTlPbHdeKnyRG6SaTaBMbLlys9kajgc1GP8qcSR9wBNY6CWuZLpht1JkVRYOflA",
+                    clientId: templeDetails.paypalClientId,
                   }}
                   shippingPreference="NO_SHIPPING"
                   onSuccess={(details, data) => {
